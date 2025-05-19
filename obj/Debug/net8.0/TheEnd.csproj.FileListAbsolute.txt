@@ -1,0 +1,68 @@
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\TheEnd.exe
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\TheEnd.deps.json
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\TheEnd.runtimeconfig.json
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\TheEnd.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\TheEnd.pdb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Autofac.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\MonoGame.Extended.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\MonoGame.Extended.Content.Pipeline.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\MonoGame.Framework.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\NVorbis.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\runtimes\linux-x64\native\libopenal.so.1
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\runtimes\osx\native\libopenal.1.dylib
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\runtimes\win-x64\native\soft_oal.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\runtimes\win-x86\native\soft_oal.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\runtimes\linux-x64\native\libSDL2-2.0.so.0
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\runtimes\osx\native\libSDL2.dylib
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\runtimes\win-x64\native\SDL2.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.csproj.AssemblyReference.cache
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.AssemblyInfoInputs.cache
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.AssemblyInfo.cs
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.csproj.CoreCompileInputs.cache
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.csproj.Up2Date
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\refint\TheEnd.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.pdb
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.genruntimeconfig.cache
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\ref\TheEnd.dll
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Maps\map.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Maps\tileset_map.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Maps\tileset_map_0.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Player\idle.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Fonts\Arial-36.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Fonts\Arial-48.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Fonts\Arial.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Fonts\Minecraft-24.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Fonts\Minecraft-36.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Fonts\Minecraft-48.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Fonts\Minecraft.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Player\Idle\idle.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Player\WalkDown\walkdown.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Player\WalkRight\walkright.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Player\WalkLeft\walkleft.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Player\WalkUp\walkup.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Maps\home_map.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Maps\home_tileset_0.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Maps\home_tileset_1.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Items\sheetofpaper_0.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Maps\sheetofpaper_0.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Items\paper_panel.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Items\sheetofpaper.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\Idle\idle.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkDown\walkdown.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkDown\Zombie-Tileset---_0395_Capa-396.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkDown\Zombie-Tileset---_0396_Capa-397.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkLeft\walkleft.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkLeft\Zombie-Tileset - -_0397_Capa-398.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkLeft\Zombie-Tileset - -_0398_Capa-399.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkLeft\Zombie-Tileset - -_0399_Capa-400.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkRight\walkright.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkRight\Zombie-Tileset - -_0397_Capa-398.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkRight\Zombie-Tileset - -_0398_Capa-399.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkRight\Zombie-Tileset - -_0399_Capa-400.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkUp\walkup.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkUp\Zombie-Tileset - -_0400_Capa-401.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkUp\Zombie-Tileset---_0401_Capa-402.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkUp\Zombie-Tileset---_0402_Capa-403.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Weapons\Guns\gun.xnb

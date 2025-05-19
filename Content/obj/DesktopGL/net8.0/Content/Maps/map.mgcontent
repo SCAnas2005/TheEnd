@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/map.tmx</SourceFile>
+  <SourceTime>2025-05-19T10:28:51.7112394+02:00</SourceTime>
+  <DestFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Content/Maps/map.xnb</DestFile>
+  <DestTime>2025-05-19T10:28:55.7056303+02:00</DestTime>
+  <Importer>TiledMapImporter</Importer>
+  <ImporterTime>2025-01-10T18:49:08+01:00</ImporterTime>
+  <Processor>TiledMapProcessor</Processor>
+  <ProcessorTime>2025-01-10T18:49:08+01:00</ProcessorTime>
+  <Dependencies>
+    <string>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/../../../../Downloads/door.tx</string>
+  </Dependencies>
+  <BuildAsset>
+    <string>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Content/Maps/tileset_map_0.xnb</string>
+  </BuildAsset>
+  <BuildOutput />
+</PipelineBuildEvent>

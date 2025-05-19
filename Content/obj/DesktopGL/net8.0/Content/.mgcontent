@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-36.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-48.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-24.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-36.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-48.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/paper_panel.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/sheetofpaper.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/home_map.tmx</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/map.tmx</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/tileset_map.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Idle/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkDown/walkdown.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkLeft/walkleft.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/walkright.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkUp/walkup.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Weapons/Guns/gun.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/Idle/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkDown/walkdown.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkDown/Zombie-Tileset---_0395_Capa-396.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkDown/Zombie-Tileset---_0396_Capa-397.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkLeft/walkleft.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkLeft/Zombie-Tileset - -_0397_Capa-398.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkLeft/Zombie-Tileset - -_0398_Capa-399.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkLeft/Zombie-Tileset - -_0399_Capa-400.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkRight/walkright.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkRight/Zombie-Tileset - -_0397_Capa-398.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkRight/Zombie-Tileset - -_0398_Capa-399.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkRight/Zombie-Tileset - -_0399_Capa-400.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkUp/walkup.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkUp/Zombie-Tileset - -_0400_Capa-401.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkUp/Zombie-Tileset---_0401_Capa-402.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkUp/Zombie-Tileset---_0402_Capa-403.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
