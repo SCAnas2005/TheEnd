@@ -24,7 +24,7 @@ public class Player : Sprite
     private Dictionary<Animation, AnimationSprite> _animations;
     public Animation CurrentAnimation;
 
-    public Weapon gun;
+    public Inventory Inventory;
 
     public Player(Rectangle rect, string src, int speed, Map map, bool debug = false) : base(rect, src, speed, debug)
     {
@@ -32,29 +32,33 @@ public class Player : Sprite
         CurrentAnimation = Animation.Idle;
         _speed = 3;
         Map = map;
-        gun = null;
+
+        Inventory = new Inventory(5);
     }
 
     public void SetNewMap(Map newMap)
     {
         Map = newMap;
-        if (gun != null)
+        foreach (var item in Inventory.GetItems())
         {
-            gun.Map = newMap;
-            gun.MapScene = newMap.Scene;
+            item.Map = Map;
+            item.MapScene = Map.Scene;
         }
     }
 
     public void UpdateGunPosition()
     {
-        if (gun != null)
+        foreach (var item in Inventory.GetItems())
         {
-            gun.Rect = new Rectangle(
-                x: _rect.X + Utils.GetPercentageInt(_rect.Width, -7),
-                y: _rect.Y + Utils.GetPercentageInt(_rect.Height, 38),
-                width: Utils.GetPercentageInt(_rect.Width, 114),
-                height: Utils.GetPercentageInt(_rect.Height, 31)
-            );
+            if (item is Weapon)
+            {
+                item.Rect = new Rectangle(
+                    x: _rect.X + Utils.GetPercentageInt(_rect.Width, -7),
+                    y: _rect.Y + Utils.GetPercentageInt(_rect.Height, 38),
+                    width: Utils.GetPercentageInt(_rect.Width, 114),
+                    height: Utils.GetPercentageInt(_rect.Height, 31)
+                );
+            }
         }
     }
 
@@ -68,9 +72,10 @@ public class Player : Sprite
         AddAnimation(Animation.Up, "Player/WalkUp/walkup", 3, 100, 14, 15, 1, 3);
         AddAnimation(Animation.Left, "Player/WalkLeft/walkleft", 3, 100, 14, 15, 1, 3);
 
-        gun?.Load(Content);
-
-
+        foreach (var item in Inventory.GetItems())
+        {
+            item?.Load(Content);
+        }
     }
 
     public void AddAnimation(Animation a, string src, int frames, int frameTime, int width, int height, int LineNumber, int ColumnNumber, int LineIndex = 0, int ColumnIndex = 0, bool reverseFrame = false)
@@ -81,13 +86,8 @@ public class Player : Sprite
 
     public void DropItem()
     {
-        if (gun != null)
-        {
-            gun.IsDropped = true;
-            gun = null;
-        }
+        Inventory.RemoveSelectedItem();
     }
-
 
 
     public override void Update(GameTime gameTime)
@@ -110,12 +110,18 @@ public class Player : Sprite
         if (InputManager.IsHolding(Keys.D))
         {
             _dX = 1;
-            if (gun != null) gun.DirectionX = _dX;
+            if (Inventory.SelectedItem != null && Inventory.SelectedItem is Weapon)
+            {
+                ((Weapon)Inventory.SelectedItem).DirectionX = _dX;
+            }
         }
         else if (InputManager.IsHolding(Keys.Q))
         {
             _dX = -1;
-            if (gun != null) gun.DirectionX = _dX;
+            if (Inventory.SelectedItem != null && Inventory.SelectedItem is Weapon)
+            {
+                ((Weapon)Inventory.SelectedItem).DirectionX = _dX;
+            }
         }
 
         // Détermine l'animation en fonction de la direction prioritaire
@@ -139,11 +145,26 @@ public class Player : Sprite
         UpdateGunPosition();
 
         _animations[CurrentAnimation].Update(gameTime);
-        gun?.Update(gameTime, this, Map);
+        Inventory.UpdateSelectedItem(gameTime, this, Map);
 
         if (InputManager.IsPressed(Keys.L))
         {
             DropItem();
+        }
+
+        for (int i = 1; i <= 5; i++)
+        {
+            Keys key = (Keys)((int)Keys.NumPad0 + i);
+            Keys key2 = (Keys)((int)Keys.D0 + i);
+            if (InputManager.IsPressed(key) || InputManager.IsPressed(key2))
+            {
+                if (Inventory.SelectedItemIndex != i - 1)
+                {
+                    Inventory.SelectedItemIndex = i - 1;
+                    Console.WriteLine($"New item selected {i} : {(Inventory.SelectedItem != null ? Inventory.SelectedItem.Name : null)}");
+                }
+                break;
+            }
         }
 
     }
@@ -156,7 +177,7 @@ public class Player : Sprite
         {
             Shape.DrawRectangle(_spriteBatch, _rect, Color.Blue);  
         }
-        gun?.Draw(_spriteBatch);
+        Inventory.DrawSelectedItem(_spriteBatch);
         Text.Write(_spriteBatch, $"x/y: {(_rect.X, _rect.Y)}, map:{_mapPos}", Vector2.Zero, Color.Blue);
     }
 }

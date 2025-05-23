@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="home_door">
+  <properties>
+   <property name="destinationC" value="17"/>
+   <property name="destinationL" value="17"/>
+   <property name="destinationMap" value="home_map"/>
+   <property name="type" value="door"/>
+  </properties>
+ </object>
+</template>

@@ -4,7 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Weapons/Guns/gun.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/family/timmy.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-36.spritefont</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-48.spritefont</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial.spritefont</File>
@@ -12,7 +12,11 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-36.spritefont</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-48.spritefont</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Inventory/cursor.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/paper_panel_2.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/paper_panel.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/photo.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/secret_key.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/sheetofpaper.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/home_map.tmx</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/map.tmx</File>
@@ -23,6 +27,7 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkLeft/walkleft.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/walkright.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkUp/walkup.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Weapons/Guns/gun.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/Idle/idle.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkDown/walkdown.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkDown/Zombie-Tileset---_0395_Capa-396.png</File>
@@ -41,6 +46,45 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkUp/Zombie-Tileset---_0402_Capa-403.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>

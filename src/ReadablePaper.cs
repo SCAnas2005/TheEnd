@@ -14,10 +14,12 @@ public class ReadablePaperObject : InteractionObject
     public ReadablePaperObject(
         Rectangle rect, 
         string type, 
+        MapScene mapScene,
+        string name,
         int? l, int? c, 
         string content = "",
         Func<string> actionName = null, Func<string> actionInstructions = null
-    ) : base(rect, type, l, c, actionName, actionInstructions)
+    ) : base(rect, type, mapScene, name, l, c, actionName, actionInstructions)
     {   
         IsIntersectWithPlayer = false;
         Content = content;

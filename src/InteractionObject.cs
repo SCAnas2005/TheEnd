@@ -10,14 +10,19 @@ public abstract class InteractionObject
     public string type;
     public int? l;
     public int? c;
+    public string name;
 
+    public MapScene MapScene; 
+    
     public Func<string> ActionName;
     public Func<string> ActionInstructions;
 
-    public InteractionObject(Rectangle rect, string type, int? l, int? c, Func<string> actionName = null, Func<string> actionInstructions = null)
+
+    public InteractionObject(Rectangle rect, string type, MapScene mapScene, string name, int? l, int? c, Func<string> actionName = null, Func<string> actionInstructions = null)
     {
         this.rect = rect;
         this.type = type;
+        this.name = name;
         this.l = l; this.c = c;
         ActionName = actionName;
         ActionInstructions = actionInstructions;

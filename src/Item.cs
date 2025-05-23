@@ -1,5 +1,6 @@
 
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,6 +10,7 @@ using TheEnd;
 public abstract class Item
 {
     protected Rectangle _rect;
+    protected Rectangle _zoneRect;
     protected string _name;
     protected Texture2D _texture;
     protected string _src;
@@ -17,20 +19,26 @@ public abstract class Item
 
     public bool IsDropped;
     public bool IsIntersectWithPlayer = false;
+    public string Name {get{ return _name; }}
 
-    public Rectangle Rect { get { return _rect; } set { _rect = value; } }
+    public Texture2D Texture { get { return _texture; } }
 
-    public Item(Rectangle rect, string src, string name, Map map, MapScene mapScene)
+    public Rectangle Rect { get { return _rect; } set { _rect = value;_zoneRect = GetInteractionZone(_rect, 15); } }
+
+    public Item(Rectangle rect, string src, string name, Map map, MapScene mapScene, bool dropped = true)
     {
         _rect = rect;
+        _zoneRect = GetInteractionZone(_rect, 15);
         _src = src;
         _name = name;
 
         Map = map;
         MapScene = mapScene;
 
-        IsDropped = true;
+        IsDropped = dropped;
     }
+
+    
 
     public virtual string GetConditionName() => "Prendre";
     public virtual string GetConditionInstruction() => $"Appuyer sur [E] pour {GetConditionName()}";
@@ -40,11 +48,22 @@ public abstract class Item
         _texture = Content.Load<Texture2D>(_src);
     }
 
+    public Rectangle GetInteractionZone(Rectangle baseRect, int padding)
+    {
+        return new Rectangle(
+            baseRect.X - padding,
+            baseRect.Y - padding,
+            baseRect.Width + padding * 2,
+            baseRect.Height + padding * 2
+        );
+    }
+
     public virtual void Update(GameTime gameTime, Player player, Map map)
     {
-        IsIntersectWithPlayer = _rect.Intersects(player.Rect);
+        IsIntersectWithPlayer = _zoneRect.Intersects(player.Rect);
         if (InputManager.IsPressed(Keys.E) && IsIntersectWithPlayer)
         {
+            Console.WriteLine("pressed [E]");
             Action(player, map);
         }
     }
@@ -65,8 +84,14 @@ public abstract class Item
 
     public virtual void Draw(SpriteBatch _spriteBatch)
     {
-        _spriteBatch.Draw(_texture, _rect, Color.White);
-        DrawIndications(_spriteBatch);
+        if (IsDropped)
+        {
+            _spriteBatch.Draw(_texture, _rect, Color.White);
+
+            Shape.DrawRectangle(_spriteBatch, _rect, Color.Blue);
+            Shape.DrawRectangle(_spriteBatch, _zoneRect, Color.Purple);
+            DrawIndications(_spriteBatch);
+        }
     }
 
 }

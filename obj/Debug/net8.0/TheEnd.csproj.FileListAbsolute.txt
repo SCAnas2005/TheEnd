@@ -66,3 +66,9 @@ C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkUp\Zombi
 C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkUp\Zombie-Tileset---_0401_Capa-402.xnb
 C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Zombies\WalkUp\Zombie-Tileset---_0402_Capa-403.xnb
 C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Weapons\Guns\gun.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\obj\Debug\net8.0\TheEnd.sourcelink.json
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Items\secret_key.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Inventory\cursor.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\family\timmy.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Items\paper_panel_2.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Items\photo.xnb

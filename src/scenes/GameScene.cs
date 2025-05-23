@@ -16,7 +16,10 @@ public enum MapScene {
 
 public class GameScene : Scene {
 
+
+
     private Rectangle _InfoRect;
+    private InventoryWidget _inventoryWidget;
 
     private (int, int) playerPos;
 
@@ -25,7 +28,7 @@ public class GameScene : Scene {
 
     private Map CurrentMapScene {get {return _maps[_mapScene];}}
 
-    public List<InteractionObject> InteractionObjects;
+    public Dictionary<MapScene, List<InteractionObject>> InteractionObjects;
 
     private Chrono _chrono;
 
@@ -45,6 +48,7 @@ public class GameScene : Scene {
         _items = [];
 
         _InfoRect = new Rectangle(_rect.X + _rect.Width - 200, _rect.Y, 200, _rect.Height);
+        
         InteractionObjects = [];
         CreateAllMaps();
     }
@@ -66,99 +70,191 @@ public class GameScene : Scene {
         if (!_maps[_mapScene].Loaded)
         {
             _maps[_mapScene].Load(Globals.Content);
-            CreateItems();
+            CreateItemsForScene(_mapScene);
+            CreateInteractionsForMapScene(_mapScene);
         }
         if (newPlayerPos != null)
             _player.Position = newPlayerPos.Value;
         _player.SetNewMap(CurrentMapScene);
-        GetInteractions();
+
+        Console.WriteLine($"Changing map to {_mapScene}");
     }
 
 
-    public void GetInteractions()
+    public void CreateInteractionsForMapScene(MapScene scene)
     {
-        InteractionObjects = [];
-        foreach (var obj in CurrentMapScene.TiledMap.GetLayer<TiledMapObjectLayer>("Interaction").Objects)
+        if (InteractionObjects.ContainsKey(scene)) { return; }
+        InteractionObjects[scene] = [];
+        foreach (var obj in _maps[scene].TiledMap.GetLayer<TiledMapObjectLayer>("Interaction").Objects)
         {
             InteractionObject i = null;
-            if (obj.Name == "home_door" && obj.Properties["type"] == "door")
+            if (scene == MapScene.City1)
             {
-                i = new TransitionDoorObject(
-                    rect: new Rectangle(_rect.X+(int)obj.Position.X, _rect.Y+(int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                    type: obj.Properties["type"],
-                    l: int.Parse(obj.Properties["destinationL"]),
-                    c: int.Parse(obj.Properties["destinationC"]),
-                    destinationMap: Utils.StringMapNameToMapScene(obj.Properties["destinationMap"])
-                );
-            } 
-            if (obj.Name == "back_home_door" && obj.Properties["type"] == "door")
-            {
-                i = new TransitionDoorObject(
-                    rect: new Rectangle(_rect.X+(int)obj.Position.X, _rect.Y+(int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                    type: obj.Properties["type"],
-                    l: int.Parse(obj.Properties["destinationL"]),
-                    c: int.Parse(obj.Properties["destinationC"]),
-                    destinationMap: Utils.StringMapNameToMapScene(obj.Properties["destinationMap"]),
-                    actionName: () => "[Sortir]",
-                    actionInstructions: () => "Appuyer sur [E] pour [Sortir]"
-                );
-            } 
-            if (obj.Name == "home_door_1" && obj.Properties["type"] == "normal_door")
-            {
-                i = new NormalDoorObject(
-                    rect: new Rectangle(_rect.X+(int)obj.Position.X, _rect.Y+(int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                    type: obj.Properties["type"],
-                    l: int.Parse(obj.Properties["posL"]),
-                    c: int.Parse(obj.Properties["posC"]),
-                    state: bool.Parse(obj.Properties["state"])
-                );
+                if (obj.Name == "home_door" && obj.Properties["type"] == "door")
+                {
+                    i = new TransitionDoorObject(
+                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                        type: obj.Properties["type"],
+                        mapScene: scene,
+                        name: obj.Name,
+                        l: int.Parse(obj.Properties["destinationL"]),
+                        c: int.Parse(obj.Properties["destinationC"]),
+                        destinationMap: Utils.StringMapNameToMapScene(obj.Properties["destinationMap"])
+                    );
+                }
             }
-            if (obj.Name == "table_paper" && obj.Properties["type"] == "readable_paper")
+            else if (scene == MapScene.Home)
             {
-                i = new ReadablePaperObject(
-                    rect: new Rectangle(_rect.X+(int)obj.Position.X, _rect.Y+(int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                    type: obj.Properties["type"],
-                    l: int.Parse(obj.Properties["posL"]),
-                    c: int.Parse(obj.Properties["posC"]),
-                    content: File.ReadAllText("data/letter.txt"),
-                    actionName: () => "[Lire]",
-                    actionInstructions: () => "Appuyer sur [E] pour [LIRE]"
-                );
+                if (obj.Name == "back_home_door" && obj.Properties["type"] == "door")
+                {
+                    i = new TransitionDoorObject(
+                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                        type: obj.Properties["type"],
+                        mapScene: MapScene.Home,
+                        name: obj.Name,
+                        l: int.Parse(obj.Properties["destinationL"]),
+                        c: int.Parse(obj.Properties["destinationC"]),
+                        destinationMap: Utils.StringMapNameToMapScene(obj.Properties["destinationMap"]),
+                        actionName: () => "[Sortir]",
+                        actionInstructions: () => "Appuyer sur [E] pour [Sortir]"
+                    );
+                }
+                if (obj.Name.Contains("home_door") && obj.Properties["type"] == "normal_door")
+                {
+                    i = new NormalDoorObject(
+                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                        type: obj.Properties["type"],
+                        mapScene: MapScene.Home,
+                        name: obj.Name,
+                        l: int.Parse(obj.Properties["posL"]),
+                        c: int.Parse(obj.Properties["posC"]),
+                        state: bool.Parse(obj.Properties["state"]),
+                        locked: bool.Parse(obj.Properties["locked"])
+                    );
+                }
+                if (obj.Name == "table_paper" && obj.Properties["type"] == "readable_paper")
+                {
+                    i = new ReadablePaperObject(
+                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                        type: obj.Properties["type"],
+                        mapScene: MapScene.Home,
+                        name: obj.Name,
+                        l: int.Parse(obj.Properties["posL"]),
+                        c: int.Parse(obj.Properties["posC"]),
+                        content: File.ReadAllText("data/letter.txt"),
+                        actionName: () => "[Lire]",
+                        actionInstructions: () => "Appuyer sur [E] pour [LIRE]"
+                    );
+                }
+                // if (obj.Name == "home_door_2" && obj.Properties["type"] == "normal_door")
+                // {
+                //     i = new NormalDoorObject(
+                //         rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                //         type: obj.Properties["type"],
+                //         mapScene: MapScene.Home,
+                //         name: obj.Name,
+                //         l: int.Parse(obj.Properties["posL"]),
+                //         c: int.Parse(obj.Properties["posC"]),
+                //         state: bool.Parse(obj.Properties["state"]),
+                //         locked: bool.Parse(obj.Properties["locked"])
+                //     );
+                // }
+                // if (obj.Name == "home_door_3" && obj.Properties["type"] == "normal_door")
+                // {
+                //     i = new NormalDoorObject(
+                //         rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                //         type: obj.Properties["type"],
+                //         mapScene: MapScene.Home,
+                //         name: obj.Name,
+                //         l: int.Parse(obj.Properties["posL"]),
+                //         c: int.Parse(obj.Properties["posC"]),
+                //         state: bool.Parse(obj.Properties["state"]),
+                //         locked: bool.Parse(obj.Properties["locked"])
+                //     );
+                // }
+                if (obj.Name == "home_armoire_cle" && obj.Properties["type"] == "armoire")
+                {
+                    i = new ArmoireObject(
+                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                        type: obj.Properties["type"],
+                        mapScene: MapScene.Home,
+                        name: obj.Name,
+                        l: int.Parse(obj.Properties["posL"]),
+                        c: int.Parse(obj.Properties["posC"]),
+                        item: obj.Properties["content"] == "" ? null : _items.FirstOrDefault(itm => itm.Name == "Secret key")
+                    );
+                }
+
+                if (obj.Name == "home_armoire_timmy" && obj.Properties["type"] == "armoire")
+                {
+                    i = new ArmoireObject(
+                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                        type: obj.Properties["type"],
+                        mapScene: MapScene.Home,
+                        name: obj.Name,
+                        l: int.Parse(obj.Properties["posL"]),
+                        c: int.Parse(obj.Properties["posC"]),
+                        item: obj.Properties["content"] == "" ? null : _items.FirstOrDefault(itm => itm.Name == "Photo de timmy")
+                    );
+                }
+
+                if (obj.Name.Contains("vide") && obj.Properties["type"] == "armoire")
+                {
+                    i = new ArmoireObject(
+                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                        type: obj.Properties["type"],
+                        mapScene: MapScene.Home,
+                        name: obj.Name,
+                        l: int.Parse(obj.Properties["posL"]),
+                        c: int.Parse(obj.Properties["posC"]),
+                        item: null
+                    );
+                }
             }
-            // if (obj.Name == "gun_1" && obj.Properties["type"] == "gun")
-            // {
-            //     i = new GunObject(
-            //         rect: new Rectangle(_rect.X+(int)obj.Position.X, _rect.Y+(int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-            //         type: obj.Properties["type"],
-            //         l: int.Parse(obj.Properties["posL"]),
-            //         c: int.Parse(obj.Properties["posC"]),
-            //         name: obj.Name,
-            //         actionName: () => "[Prendre]",
-            //         actionInstructions: () => "Appuyer sur [E] pour [Prendre]"
-            //     );
-            // }
-            if (i != null) InteractionObjects.Add(i);
+            if (i != null) InteractionObjects[scene].Add(i);
         }
     }
 
-    public void CreateItems()
+    public void CreateItemsForScene(MapScene scene)
     {
         Item i;
-        if (_mapScene == MapScene.City1)
+        if (scene == MapScene.Home)
         {
             i = new Weapon(
                 rect: new Rectangle(
-                    x: (int)Map.GetPosFromMap((6, 13), CurrentMapScene.TileSize).X,
-                    y: (int)Map.GetPosFromMap((6, 13), CurrentMapScene.TileSize).Y,
+                    x: (int)Map.GetPosFromMap((5, 20), CurrentMapScene.TileSize).X,
+                    y: (int)Map.GetPosFromMap((5, 20), CurrentMapScene.TileSize).Y,
                     width: CurrentMapScene.TileSize.Width,
                     height: CurrentMapScene.TileSize.Height
                 ),
                 src: "Weapons/Guns/gun",
                 name: "Gun",
-                map: CurrentMapScene,
-                mapScene: _mapScene
+                map: _maps[scene],
+                mapScene: scene
             );
 
+            i.Load(Globals.Content);
+            _items.Add(i);
+
+            i = new KeyItem(new Rectangle(120, 20, 16, 10), "Items/secret_key", name: "Secret key", doorToUnlock: "home_door_2", _maps[_mapScene], _mapScene, dropped: false);
+            i.Load(Globals.Content);
+            _items.Add(i);
+            
+            i = new PhotoItem(
+                rect: new Rectangle(
+                    (int)Map.GetPosFromMap((5, 13), _maps[_mapScene].TileSize).X,
+                    (int)Map.GetPosFromMap((5, 13), _maps[_mapScene].TileSize).Y,
+                    CurrentMapScene.TileSize.Width,
+                    CurrentMapScene.TileSize.Height
+                ),
+                src: "family/timmy",
+                name: "Photo de timmy",
+                map: _maps[scene],
+                mapScene: scene,
+                dropped: false
+            );
+
+            i.Load(Globals.Content);
             _items.Add(i);
         }
     }
@@ -201,8 +297,8 @@ public class GameScene : Scene {
             _zombies.Add(zombie);
         }
 
-        GetInteractions();
-        CreateItems();
+        CreateItemsForScene(_mapScene);
+        CreateInteractionsForMapScene(_mapScene);
 
         _player.Map = CurrentMapScene;
         _player.Load(Content);
@@ -214,16 +310,32 @@ public class GameScene : Scene {
         {
             itm.Load(Content);
         }
+
+        _inventoryWidget = new InventoryWidget(
+            rect: new Rectangle(_InfoRect.X + 10, _InfoRect.Y + 50, _InfoRect.Width - 10, _InfoRect.Height),
+            inventory: _player.Inventory
+        );
+
+        _inventoryWidget.Load(Content);
     }
 
     public override void Update(GameTime gameTime)
     {
         CurrentMapScene.Update(gameTime);
-        foreach (var obj in InteractionObjects)
-        {
-            obj.Update(gameTime, CurrentMapScene, _player);
+        var currentScene = _mapScene;
 
+        if (InteractionObjects.TryGetValue(currentScene, out var objects))
+        {
+            foreach (var obj in objects.ToList()) // .ToList() évite aussi les erreurs de modification
+            {
+                obj.Update(gameTime, CurrentMapScene, _player);
+
+                // Si la scène a changé (par ex : par une porte), on arrête ici
+                if (_mapScene != currentScene)
+                    break;
+            }
         }
+        _player.Update(gameTime);
         foreach (var itm in _items)
         {
             if (itm.MapScene == _mapScene && itm.IsDropped)
@@ -231,7 +343,6 @@ public class GameScene : Scene {
                 itm.Update(gameTime, _player, CurrentMapScene);
             }
         }
-        _player.Update(gameTime);
         foreach (var z in _zombies)
         {
             if (z.MapScene == _mapScene)
@@ -239,6 +350,10 @@ public class GameScene : Scene {
                 z.Update(gameTime);
             }
         }
+
+
+
+        _inventoryWidget.Update(gameTime);    
     }
 
     public override void Draw(SpriteBatch _spriteBatch)
@@ -248,17 +363,16 @@ public class GameScene : Scene {
         CurrentMapScene.Draw(_spriteBatch);
         foreach (var itm in _items)
         {
-            Console.WriteLine($"Item: {itm.IsDropped}, {itm.MapScene}, currentMapScene: {_mapScene}");
             if (itm.MapScene == _mapScene && itm.IsDropped)
             {
                 itm.Draw(_spriteBatch);
             }
         }
         _player.Draw(_spriteBatch);
-        foreach (var obj in InteractionObjects)
+        foreach (var obj in InteractionObjects[_mapScene])
         {
             obj.Draw(_spriteBatch);
-            
+
         }
         foreach (var z in _zombies)
         {
@@ -269,10 +383,10 @@ public class GameScene : Scene {
         }
         _spriteBatch.End();
         _spriteBatch.Begin();
+        _inventoryWidget.Draw(_spriteBatch);
         if (_debug)
         {
             DrawDebug(_spriteBatch);
         }
-
     }
 }

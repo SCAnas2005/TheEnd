@@ -12,10 +12,12 @@ public class TransitionDoorObject : InteractionObject
     public TransitionDoorObject(
         Rectangle rect, 
         string type, 
+        MapScene mapScene,
+        string name,
         int? l, int? c, 
         MapScene? destinationMap,
         Func<string> actionName = null, Func<string> actionInstructions = null
-    ) : base(rect, type, l, c, actionName, actionInstructions)
+    ) : base(rect, type, mapScene, name, l, c, actionName, actionInstructions)
     {   
         this.destinationMap = destinationMap;
         IsIntersectWithPlayer = false;
@@ -37,7 +39,7 @@ public class TransitionDoorObject : InteractionObject
     public override void DoAction(Map map, Player player)
     {
         GameScene s = (GameScene)SceneManager.Scenes[SceneState.Game];
-        s.ChangeMapScene(destinationMap.Value, (l != null && c !=null) ? Map.GetPosFromMap((l.Value, c.Value), Globals.MapTileSize) : null);
+        s.ChangeMapScene(destinationMap.Value, (l != null && c !=null) ? Map.GetPosFromMap((l.Value, c.Value), map.TileSize) : null);
     }
 
     public override void Update(GameTime gametime, Map map, Player player){

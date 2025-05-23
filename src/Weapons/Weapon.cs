@@ -116,7 +116,7 @@ public class Weapon : Item
 
     public override void Action(Player player, Map map)
     {
-        player.gun = this;
+        player.Inventory.AddItem(this);
         IsDropped = false;
     }
 
