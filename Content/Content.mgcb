@@ -193,6 +193,18 @@
 /processorParam:TextureFormat=Color
 /build:Player/Idle/idle.png
 
+#begin Player/pp.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player/pp.png
+
 #begin Player/WalkDown/walkdown.png
 /importer:TextureImporter
 /processor:TextureProcessor

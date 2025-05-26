@@ -39,7 +39,6 @@ public class ArmoireObject : InteractionObject
 
     public override void DoAction(Map map, Player player)
     {
-        Console.WriteLine("hre");
         if (Item != null)
         {
             Item.IsDropped = false;

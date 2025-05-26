@@ -12,7 +12,7 @@ public class Weapon : Item
 
     public bool IsShooting = false;
 
-    public int ammo;
+    public int Ammo;
     private List<Bullet> _bullets;
 
 
@@ -21,7 +21,7 @@ public class Weapon : Item
     public Weapon(Rectangle rect, string src, string name, Map map, MapScene mapScene, int dx = 1) : base(rect, src, name, map, mapScene)
     {
         _dX = dx;
-        ammo = 5;
+        Ammo = 5;
         _bullets = [];
     }
 
@@ -32,7 +32,7 @@ public class Weapon : Item
     public void Shoot()
     {
         IsShooting = true;
-        if (ammo > 0)
+        if (Ammo > 0)
         {
             _bullets.Add(new Bullet(
                 rect: new Rectangle(_rect.X + _rect.Width, _rect.Y, 3, 1),
@@ -40,7 +40,7 @@ public class Weapon : Item
                 speed: 8
             ));
 
-            ammo--;
+            Ammo--;
         }
 
     }

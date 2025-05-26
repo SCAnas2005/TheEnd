@@ -19,14 +19,14 @@ public class Map
     private Size _tileSize;
     private float _scale;
     private Matrix _scaleMatrix;
-    private Size _size;
 
     private string _src;
 
     public Size TileSize {get{return _tileSize;}}
-    public Size Size {get{return _size;} }
+    public Size Size {get{return new Size(_rect.Width, _rect.Height);} }
     public Rectangle Rect {get{return _rect;}}
-    public float Scale {get{return _scale;}}
+    public Vector2 Position {get{ return new Vector2(_rect.X, _rect.Y); } set{ _rect.X = (int)value.X;  _rect.Y = (int)value.Y; }}
+    public float Scale { get { return _scale; } }
     public Matrix ScaleMatrix {get{return _scaleMatrix;}}
 
     public TiledMap TiledMap {get{return _map;}}
@@ -45,11 +45,16 @@ public class Map
         Name = name;
         Scene = scene;
         Loaded = false;
-    }  
+    }
+
+    public void InitPosition(int x, int y)
+    {
+        Position = new Vector2(x, y);
+    }
 
     public static (int, int) GetMapPosFromVector2(Vector2 pos, Size tileSize)
     {
-        return ((int)pos.Y/tileSize.Height, (int)pos.X/tileSize.Width);
+        return ((int)pos.Y / tileSize.Height, (int)pos.X / tileSize.Width);
     }
     
     public static Vector2 GetPosFromMap((int, int) pos, Size tileSize)
@@ -87,7 +92,7 @@ public class Map
     {
         _map = Content.Load<TiledMap>(_src);
         float scaleX = Globals.ScreenSize.Width / (float)_map.WidthInPixels;
-        float scaleY = Globals.ScreenSize.Height / (float)_map.HeightInPixels;
+        float scaleY = Globals.ScreenSize.Height*4/5 / (float)_map.HeightInPixels;
         _scale = Math.Min(scaleX, scaleY);
         Globals.TileScale = _scale;
         _scaleMatrix = Matrix.CreateScale(_scale);
@@ -235,7 +240,7 @@ public class Map
         if (debug)
         {
             DrawCollisions(_spriteBatch);
-            Shape.DrawRectangle(_spriteBatch, _rect, Color.Blue);
+            Shape.DrawRectangle(_spriteBatch, Rect, Color.Blue);
         }
     }
 }

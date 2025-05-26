@@ -16,10 +16,10 @@ public enum MapScene {
 
 public class GameScene : Scene {
 
-
-
     private Rectangle _InfoRect;
+    private Rectangle _InfoRectRight;
     private InventoryWidget _inventoryWidget;
+    private UserInfoWidget _userInfo;
 
     private (int, int) playerPos;
 
@@ -35,7 +35,6 @@ public class GameScene : Scene {
     private Player _player;
     public List<Zombies> _zombies;
 
-
     public List<Item> _items;
 
 
@@ -47,8 +46,9 @@ public class GameScene : Scene {
         _zombies = [];
         _items = [];
 
-        _InfoRect = new Rectangle(_rect.X + _rect.Width - 200, _rect.Y, 200, _rect.Height);
-        
+        _InfoRect = new Rectangle(_rect.X, _rect.Height - 200, _rect.Width, 200);
+        _InfoRectRight = new Rectangle(_rect.Width - 400, _rect.Y, 400, _rect.Height);
+
         InteractionObjects = [];
         CreateAllMaps();
     }
@@ -56,9 +56,9 @@ public class GameScene : Scene {
     public void CreateAllMaps()
     {
         MapScene i = MapScene.City1;
-        _maps[i] = new Map(rect: _rect, src:"Maps/map", name: "City1", scene: i);
+        _maps[i] = new Map(rect: Rectangle.Empty, src:"Maps/map", name: "City1", scene: i, debug:false);
         i = MapScene.Home;
-        _maps[i] = new Map(rect: _rect, src: "Maps/home_map", name: "Home", scene: i);
+        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/home_map", name: "Home", scene: i, debug:false);
 
         _mapScene = MapScene.City1;
     }
@@ -271,7 +271,9 @@ public class GameScene : Scene {
                 CurrentMapScene.TileSize.Height - 3
             ),
             src: "Player/idle",
+            name: "Jason",
             speed: 5,
+            health: 100,
             map: CurrentMapScene,
             debug: true
         );
@@ -289,6 +291,7 @@ public class GameScene : Scene {
                 ),
                 src: "",
                 speed: 3,
+                health: 50,
                 map: CurrentMapScene,
                 mapScene: MapScene.City1,
                 debug: true
@@ -312,11 +315,18 @@ public class GameScene : Scene {
         }
 
         _inventoryWidget = new InventoryWidget(
-            rect: new Rectangle(_InfoRect.X + 10, _InfoRect.Y + 50, _InfoRect.Width - 10, _InfoRect.Height),
+            rect: new Rectangle(_InfoRect.X + 10, _InfoRect.Y + 10, _InfoRect.Width - 10, _InfoRect.Height),
             inventory: _player.Inventory
         );
 
+        _userInfo = new UserInfoWidget(
+            rect: _InfoRectRight,
+            player: _player,
+            debug:true
+        );
+
         _inventoryWidget.Load(Content);
+        _userInfo.Load(Content);
     }
 
     public override void Update(GameTime gameTime)
@@ -353,7 +363,8 @@ public class GameScene : Scene {
 
 
 
-        _inventoryWidget.Update(gameTime);    
+        _inventoryWidget.Update(gameTime);
+        _userInfo.Update(gameTime); 
     }
 
     public override void Draw(SpriteBatch _spriteBatch)
@@ -381,9 +392,11 @@ public class GameScene : Scene {
                 z.Draw(_spriteBatch);
             }
         }
+        Shape.DrawRectangle(_spriteBatch, CurrentMapScene.Rect, Color.Red);
         _spriteBatch.End();
         _spriteBatch.Begin();
         _inventoryWidget.Draw(_spriteBatch);
+        _userInfo.Draw(_spriteBatch);
         if (_debug)
         {
             DrawDebug(_spriteBatch);

@@ -4,6 +4,13 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Idle/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/pp.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkDown/walkdown.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkLeft/walkleft.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/walkright.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkUp/walkup.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/family/timmy.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-36.spritefont</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-48.spritefont</File>
@@ -21,12 +28,6 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/home_map.tmx</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/map.tmx</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/tileset_map.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/idle.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Idle/idle.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkDown/walkdown.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkLeft/walkleft.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/walkright.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkUp/walkup.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Weapons/Guns/gun.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/Idle/idle.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkDown/walkdown.png</File>
@@ -46,39 +47,6 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkUp/Zombie-Tileset---_0402_Capa-403.png</File>
   </SourceFiles>
   <DestFiles>
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -27,7 +27,7 @@ public class Zombies : Sprite
     public MapScene MapScene;
 
 
-    public Zombies(Rectangle rect, string src, int speed, Map map, MapScene mapScene, bool debug = false) : base(rect, src, speed, debug)
+    public Zombies(Rectangle rect, string src, int speed, int health, Map map, MapScene mapScene, bool debug = false) : base(rect, src, speed, health, debug)
     {
         _animations = [];
         CurrentAnimation = Animation.Idle;

@@ -3,12 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Tiled;
 using TheEnd;
 
 public enum Animation {
@@ -21,15 +19,20 @@ public enum Animation {
 
 public class Player : Sprite
 {
+    private string _name;
     private Dictionary<Animation, AnimationSprite> _animations;
     public Animation CurrentAnimation;
-
     public Inventory Inventory;
+    public Texture2D ProfilePicture {get{ return _texture; }}
 
-    public Player(Rectangle rect, string src, int speed, Map map, bool debug = false) : base(rect, src, speed, debug)
+    public string Name {get{ return _name; }}
+
+
+    public Player(Rectangle rect, string src, string name, int speed, Map map, int health, bool debug = false) : base(rect, src, speed, health, debug)
     {
         _animations = [];
         CurrentAnimation = Animation.Idle;
+        _name = name;
         _speed = 3;
         Map = map;
 
@@ -64,7 +67,7 @@ public class Player : Sprite
 
     public override void Load(ContentManager Content)
     {
-        _texture = Content.Load<Texture2D>(_src);
+        _texture = Content.Load<Texture2D>("Player/pp");
 
         AddAnimation(Animation.Idle, "Player/Idle/idle", 1, 100, 14, 15, 1, 1);
         AddAnimation(Animation.Right, "Player/WalkRight/walkright", 3, 100, 14, 15, 1, 3);

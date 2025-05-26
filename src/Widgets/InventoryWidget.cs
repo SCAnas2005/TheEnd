@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -54,23 +55,31 @@ public class InventoryWidget : StatefulWidget
     public override void Build()
     {
         List<Widget> w = [];
+        int i = 1;
         foreach (var item in _inventory.Items)
         {
             w.Add(
                 new ContainerWidget(
-                    size: boxSize,
-                    padding: new Padding(all: 10),
-                    border: new Border(all: 2, color: Color.Blue),
-                    // fait en sorte que inventory puisse avoir des objets vides aussi (null)
-                    widgets: [
-                        item != null ? new ImageWidget(size: new Size(50,50),texture: item.Texture) : new SizedBox()
+                    alignItem: Align.Vertical,
+                    widgets:[
+                        new ContainerWidget(
+                            size: boxSize,
+                            padding: new Padding(all: 10),
+                            border: new Border(all: 2, color: Color.Blue),
+                            // fait en sorte que inventory puisse avoir des objets vides aussi (null)
+                            widgets: [
+                                item != null ? new ImageWidget(size: new Size(50,50),texture: item.Texture) : new SizedBox(),
+                            ]
+                        ),
+                        new TextWidget($"[{i}]"),
                     ]
                 )
             );
+            i++;
         }
         _container = new ContainerWidget(
             rect: _rect,
-            alignItem: Align.Vertical,
+            alignItem: Align.Horizontal,
             mainAxisAlignment: MainAxisAlignment.Start,
             crossAxisAlignment: CrossAxisAlignment.Start,
             debug: true,
@@ -112,10 +121,12 @@ public class InventoryWidget : StatefulWidget
         base.Update(gameTime);
     }
 
+
+
     public override void Draw(SpriteBatch _spriteBatch)
     {
         _container.Draw(_spriteBatch);
-        _spriteBatch.Draw(_cursor, new Rectangle(_rect.X, _rect.Y+(_lastSelectedItemIndex*boxSize.Width), boxSize.Width, boxSize.Height), Color.White);
+        _spriteBatch.Draw(_cursor, new Rectangle(_rect.X + (_lastSelectedItemIndex * boxSize.Width), _rect.Y, boxSize.Width, boxSize.Height), Color.White);
         base.Draw(_spriteBatch);
     }
 }

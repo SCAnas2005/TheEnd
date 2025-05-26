@@ -13,6 +13,9 @@ public abstract class Sprite
     protected Rectangle _rect;
     protected string _src;
     protected Texture2D _texture;
+
+    protected int _health;
+
     protected int _speed;
     public bool debug;
 
@@ -23,6 +26,7 @@ public abstract class Sprite
     public int DirectionY {get{ return _dY; }}
 
     
+    public int Health {get{ return _health; } set{ _health = value; }}
 
 
     public Map Map;
@@ -40,12 +44,14 @@ public abstract class Sprite
 
     protected (int, int) _mapPos;
 
-    public Sprite(Rectangle rect, string src, int speed, bool debug = false)
+    public Sprite(Rectangle rect, string src, int speed, int health, bool debug = false)
     {
         _rect = rect;
         _speed = speed;
         _src = src;
         this.debug = debug;
+
+        _health = health; 
 
         IsCollision = false;
         SetColisionDirection(); // All False
@@ -81,7 +87,7 @@ public abstract class Sprite
     {
         if (!map.TiledMap.Layers.Any(layer => layer.Name == "obstacles")) return false;
 
-        if (rect.X < 0 || rect.X + rect.Width >= map.Rect.X + map.Rect.Width || rect.Y < 0 || rect.Y + rect.Height >= map.Rect.Y + map.Rect.Height) return true;
+        if (rect.X < map.Rect.X || rect.X + rect.Width >= map.Rect.X + map.Rect.Width || rect.Y < map.Rect.Y || rect.Y + rect.Height >= map.Rect.Y + map.Rect.Height) return true;
         var collisionLayer = map.TiledMap.GetLayer<TiledMapTileLayer>("obstacles");
 
         // Calculer la position de la tuile en ligne et colonne pour chaque coin du personnage

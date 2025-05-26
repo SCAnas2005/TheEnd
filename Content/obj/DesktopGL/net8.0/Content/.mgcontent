@@ -23,6 +23,7 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/tileset_map.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/idle.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Idle/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/pp.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkDown/walkdown.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkLeft/walkleft.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/walkright.png</File>
@@ -46,6 +47,7 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkUp/Zombie-Tileset---_0402_Capa-403.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

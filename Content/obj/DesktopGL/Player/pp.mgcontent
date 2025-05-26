@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/walkright.png</SourceFile>
-  <SourceTime>2025-05-13T09:11:44.2702008+02:00</SourceTime>
-  <DestFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Player/WalkRight/walkright.xnb</DestFile>
-  <DestTime>2025-05-25T12:47:19.6323235+02:00</DestTime>
+  <SourceFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/pp.png</SourceFile>
+  <SourceTime>2025-05-25T12:42:04.8637772+02:00</SourceTime>
+  <DestFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Player/pp.xnb</DestFile>
+  <DestTime>2025-05-25T12:47:19.6252515+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2024-08-16T19:05:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

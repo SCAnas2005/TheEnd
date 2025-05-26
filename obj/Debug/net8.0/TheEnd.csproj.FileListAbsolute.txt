@@ -72,3 +72,4 @@ C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Inventory\cursor.xnb
 C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\family\timmy.xnb
 C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Items\paper_panel_2.xnb
 C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Items\photo.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Player\pp.xnb
