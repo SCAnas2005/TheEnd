@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-record PlayerState(int health, int? ammo);
+record PlayerState(int health, int monney, int zombieKilled, int? ammo);
 
 public class UserInfoWidget : StatefulWidget
 {
@@ -20,7 +20,7 @@ public class UserInfoWidget : StatefulWidget
         ) : base(rect, OnClick: OnClick, debug: debug)
     {
         _player = player;
-        _lastPlayerState = new PlayerState(player.Health, _player.Inventory.SelectedItem is Weapon ? ((Weapon)_player.Inventory.SelectedItem).Ammo : null);
+        _lastPlayerState = new PlayerState(player.Health, player.Money, player.ZombieKilled, _player.Inventory.SelectedItem is Gun ? ((Gun)_player.Inventory.SelectedItem).Ammo : null);
         _debug = debug;
         this.OnClick = OnClick;
 
@@ -75,7 +75,9 @@ public class UserInfoWidget : StatefulWidget
                     debug:true
                 ),
                 new TextWidget($"Health : {_player.Health}", font: CFonts.GetClosestFont(60)),
-                _player.Inventory.SelectedItem is Weapon ? new TextWidget($"Ammo : {((Weapon)_player.Inventory.SelectedItem).Ammo}", font: CFonts.GetClosestFont(60)) : new SizedBox()
+                new TextWidget($"Money: ${_player.Money}", font: CFonts.GetClosestFont(60)),
+                new TextWidget($"Zombie killed : {_player.ZombieKilled}", font: CFonts.GetClosestFont(60)),
+                _player.Inventory.SelectedItem is Gun ? new TextWidget($"Ammo : {((Gun)_player.Inventory.SelectedItem).Ammo}", font: CFonts.GetClosestFont(60)) : new SizedBox()
             ]
         );
 
@@ -96,7 +98,7 @@ public class UserInfoWidget : StatefulWidget
     {
 
         _container.Update(gameTime);
-        var _currentPlayerState = new PlayerState(_player.Health, _player.Inventory.SelectedItem is Weapon ? ((Weapon)_player.Inventory.SelectedItem).Ammo : null);
+        var _currentPlayerState = new PlayerState(_player.Health, _player.Money, _player.ZombieKilled, _player.Inventory.SelectedItem is Gun ? ((Gun)_player.Inventory.SelectedItem).Ammo : null);
         if (_currentPlayerState != _lastPlayerState)
         {
             _lastPlayerState = _currentPlayerState;

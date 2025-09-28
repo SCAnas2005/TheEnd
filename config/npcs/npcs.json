@@ -1,0 +1,68 @@
+[
+  {
+    "Name": "Marc",
+    "ProfilePicturePath": "Sprites/NPC2/pp",
+    "Animations": {
+      "idle": {
+        "Path": "Sprites/NPC2/Idle/idle",
+        "SpriteFrames": 2,
+        "FrameTime": 750,
+        "Width": 16,
+        "Height": 16,
+        "LineNumber": 2,
+        "ColumnNumber": 1,
+        "LineIndex":0,
+        "ColumnIndex:":0,
+        "ReverseFrame":false
+      },
+      "move_right": {
+        "Path": "Sprites/NPC2/Right/right",
+        "SpriteFrames": 4,
+        "FrameTime": 400,
+        "Width": 16,
+        "Height": 16,
+        "LineNumber": 4,
+        "ColumnNumber": 1,
+        "LineIndex":0,
+        "ColumnIndex:":0,
+        "ReverseFrame":false
+      },
+      "move_left": {
+        "Path": "Sprites/NPC2/Left/left",
+        "SpriteFrames": 4,
+        "FrameTime": 400,
+        "Width": 16,
+        "Height": 16,
+        "LineNumber": 4,
+        "ColumnNumber": 1,
+        "LineIndex":0,
+        "ColumnIndex:":0,
+        "ReverseFrame":false
+      },
+      "move_up": {
+        "Path": "Sprites/NPC2/Up/up",
+        "SpriteFrames": 4,
+        "FrameTime": 400,
+        "Width": 16,
+        "Height": 16,
+        "LineNumber": 4,
+        "ColumnNumber": 1,
+        "LineIndex":0,
+        "ColumnIndex:":0,
+        "ReverseFrame":false
+      },
+      "move_down": {
+        "Path": "Sprites/NPC2/Down/down",
+        "SpriteFrames": 4,
+        "FrameTime": 400,
+        "Width": 16,
+        "Height": 16,
+        "LineNumber": 4,
+        "ColumnNumber": 1,
+        "LineIndex":0,
+        "ColumnIndex:":0,
+        "ReverseFrame":false
+      }
+    }
+  }
+]

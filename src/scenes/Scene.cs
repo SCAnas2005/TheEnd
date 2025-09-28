@@ -6,9 +6,11 @@ using Microsoft.Xna.Framework.Graphics;
 using TheEnd;
 
 
-public enum SceneState {
+public enum SceneState
+{
     Menu,
-    Game
+    Game,
+    Pause,
 }
 
 

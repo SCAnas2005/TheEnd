@@ -11,10 +11,13 @@ public static class Globals
     public static Size MapTileSize;
     public static float TileScale = 1;
 
+    public static Rectangle FullScreenRect;
+
     public static void Init(GraphicsDeviceManager graphics, ContentManager Content, Size screenSize)
     {
         Graphics = graphics;
         Globals.Content = Content;
         ScreenSize = screenSize;
+        FullScreenRect = new Rectangle(0, 0, screenSize.Width, screenSize.Height);
     }
 }

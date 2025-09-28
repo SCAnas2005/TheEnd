@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Runtime.CompilerServices;
 
 
 public enum ScrollDirection{
@@ -27,28 +28,57 @@ public class ScrollViewWidget : Widget
     private int _maxScrollPosition;
 
 
-    public ScrollViewWidget(ContainerWidget child, ScrollDirection direction = ScrollDirection.Vertical) : base(Rectangle.Empty) 
+    // public int ScrollPosition
+    // {
+    //     get => _scrollPosition;
+    //     set
+    //     {
+    //         int maxScroll = Math.Max(0, _maxScrollPosition);
+    //         _scrollPosition = Math.Clamp(value, -maxScroll, 0);
+    //         Console.WriteLine("setting scroll position to : " + _scrollPosition);
+    //         int newPos = _child.Y + _scrollPosition;
+    //         _child.UpdateLayout(startX: null, startY: newPos);
+    //     }
+    // }
+    public int ScrollPosition
+    {
+        get => _scrollPosition;
+        set
+        {
+            int maxScroll = Math.Max(0, _maxScrollPosition);
+            _scrollPosition = Math.Clamp(value, -maxScroll, 0);
+
+            // Appliquer directement par rapport au rect du scrollview
+            _child.UpdateLayout(startX: null, startY: _rect.Y + _scrollPosition);
+        }
+    }
+
+    public ScrollViewWidget(ContainerWidget child, ScrollDirection direction = ScrollDirection.Vertical, int scrollPosition = 0) : base(Rectangle.Empty)
     {
         _child = child;
         _direction = direction;
         InitPosition();
-        Console.WriteLine($"min scroll position : {_minScrollPosition}, max scroll position: {_maxScrollPosition}");
-        Console.WriteLine($"container height : {_child.Rect.Height}, container widgets height : {_totalContainerSize.Height}");
-
+        ScrollPosition = scrollPosition;
     }
 
-    public override int X {get {return _rect.X;} set {
-        _rect.X = value; 
-        _child.Rect = _rect;
-        InitPosition();
-        _child.UpdateLayout();
-    }}
-    public override int Y {get {return _rect.Y;} set {
-        _rect.Y = value; 
-        _child.Rect = _rect;
-        InitPosition();
-        _child.UpdateLayout(); 
-    }}
+    public override int X {get {return _rect.X;}
+        set {
+            _rect.X = value;
+            _child.Rect = _rect;
+            InitPosition();
+            _child.UpdateLayout();
+            ScrollPosition = _scrollPosition;
+        }
+    }
+    public override int Y {get {return _rect.Y;}
+        set {
+            _rect.Y = value;
+            _child.Rect = _rect;
+            InitPosition();
+            _child.UpdateLayout();
+            ScrollPosition = _scrollPosition;
+        }
+    }
 
     public void InitPosition()
     {
@@ -57,7 +87,7 @@ public class ScrollViewWidget : Widget
         _scrollOffset = _child.Rect.Y;
         _minScrollPosition = 0;
         _maxScrollPosition = _direction == ScrollDirection.Vertical ? _totalContainerSize.Height-_child.Rect.Height : _totalContainerSize.Width-_child.Rect.Width;
-        _scrollPosition = _minScrollPosition;
+        // _scrollPosition = _minScrollPosition;    
 
     }
 
@@ -81,41 +111,60 @@ public class ScrollViewWidget : Widget
 
         if (InputManager.Hover(_rect))
         {
+            // int wheelDelta = Mouse.GetState().ScrollWheelValue;
+            // int scrollChange = (wheelDelta - _previousWheelValue) / 120 * 20;
+            // _scrollOffset += scrollChange;
+            // int maxScroll = Math.Max(0, _maxScrollPosition);
+            // _scrollOffset = Math.Clamp(_scrollOffset, -maxScroll, 0);
+
+            // if (wheelDelta != _previousWheelValue)
+            // {
+            //     if (_scrollPosition != _scrollOffset)
+            //     {
+            //         _scrollPosition = _scrollOffset;
+
+            //         int newPos = _child.Y + _scrollPosition;
+            //         _child.UpdateLayout(startX: null, startY: newPos);
+            //     }
+            // }
+
+            // _previousWheelValue = wheelDelta;
+
             int wheelDelta = Mouse.GetState().ScrollWheelValue;
             int scrollChange = (wheelDelta - _previousWheelValue) / 120 * 20;
 
-            _scrollOffset += scrollChange;
-            int maxScroll = Math.Max(0, _maxScrollPosition);
-            _scrollOffset = Math.Clamp(_scrollOffset, -maxScroll, 0);
-
             if (wheelDelta != _previousWheelValue)
             {
-                if (_scrollPosition != _scrollOffset)
-                {
-                    _scrollPosition = _scrollOffset;
-
-                    int newPos = _child.Y + _scrollPosition;
-                    _child.UpdateLayout(startX: null, startY: newPos);
-                }
+                ScrollPosition += scrollChange; 
+                _previousWheelValue = wheelDelta;
             }
-
-            _previousWheelValue = wheelDelta;
         }
     }
 
     public override void Draw(SpriteBatch _spriteBatch)
     {
-        _spriteBatch.End();
+        _spriteBatch.End(); // Fin de l'ancien batch
 
         RasterizerState rState = new RasterizerState() { ScissorTestEnable = true };
-        _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, rState);
+        var newBatch = new SpriteBatchState(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, rState);
+
+        SpriteBatchContext.Push(newBatch);
+        SpriteBatchContext.ApplyToContext(_spriteBatch, SpriteBatchContext.Top);
+
+        // Sauvegarde l'ancien ScissorRectangle
+        var previousScissor = Globals.Graphics.GraphicsDevice.ScissorRectangle;
 
         Globals.Graphics.GraphicsDevice.ScissorRectangle = _rect;
 
         _child.Draw(_spriteBatch);
 
-        _spriteBatch.End();
-        _spriteBatch.Begin();
+        _spriteBatch.End(); // Fin du nouveau batch
+
+        // Restaure l'ancien scissor
+        Globals.Graphics.GraphicsDevice.ScissorRectangle = previousScissor;
+        SpriteBatchContext.Pop();
+        SpriteBatchContext.ApplyToContext(_spriteBatch, SpriteBatchContext.Top);
     }
+
 
 }

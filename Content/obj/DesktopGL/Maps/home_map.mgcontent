@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/home_map.tmx</SourceFile>
-  <SourceTime>2025-05-22T19:11:35.9266544+02:00</SourceTime>
+  <SourceTime>2025-07-22T11:11:13.6216134+02:00</SourceTime>
   <DestFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Maps/home_map.xnb</DestFile>
-  <DestTime>2025-05-22T20:40:32.7015141+02:00</DestTime>
+  <DestTime>2025-07-24T17:48:17.0681311+02:00</DestTime>
   <Importer>TiledMapImporter</Importer>
   <ImporterTime>2025-01-10T18:49:08+01:00</ImporterTime>
   <Processor>TiledMapProcessor</Processor>
@@ -14,6 +14,8 @@
   <BuildAsset>
     <string>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Maps/home_tileset_0.xnb</string>
     <string>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Maps/sheetofpaper_0.xnb</string>
+    <string>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Maps/tileset_map_0.xnb</string>
+    <string>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Maps/house_fourniture_0.xnb</string>
   </BuildAsset>
   <BuildOutput />
 </PipelineBuildEvent>

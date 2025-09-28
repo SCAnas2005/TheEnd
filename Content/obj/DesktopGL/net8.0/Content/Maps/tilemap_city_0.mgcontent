@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/tilemap_city.png</SourceFile>
+  <SourceTime>2022-10-29T21:37:58.3625999+02:00</SourceTime>
+  <DestFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Content/Maps/tilemap_city_0.xnb</DestFile>
+  <DestTime>2025-09-27T12:53:43.9129934+02:00</DestTime>
+  <Importer>TextureImporter</Importer>
+  <ImporterTime>2024-08-16T19:05:56+02:00</ImporterTime>
+  <Processor>TextureProcessor</Processor>
+  <ProcessorTime>2024-08-16T19:05:56+02:00</ProcessorTime>
+  <Parameters>
+    <Key>ColorKeyColor</Key>
+    <Value>255,0,255,255</Value>
+  </Parameters>
+  <Parameters>
+    <Key>ColorKeyEnabled</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

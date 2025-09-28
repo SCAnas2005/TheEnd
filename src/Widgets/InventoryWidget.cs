@@ -1,16 +1,43 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Linq;
+
+public record InventoryState(Item[] Items, int SelectedIndex)
+{
+    public static InventoryState FromInventory(Inventory inventory)
+    {
+        // Copie défensive
+        return new InventoryState(inventory.Items.ToArray(), inventory.SelectedItemIndex);
+    }
+
+    public bool IsDifferentFrom(InventoryState other)
+    {
+        if (SelectedIndex != other.SelectedIndex)
+            return true;
+
+        if (Items.Length != other.Items.Length)
+            return true;
+
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (!ReferenceEquals(Items[i], other.Items[i]))
+                return true;
+        }
+
+        return false;
+    }
+}
+
+
 
 
 public class InventoryWidget : StatefulWidget
 {
-    private int _lastInventoryStorage;
-    private int _lastSelectedItemIndex;
+    private InventoryState _lastState;
     private Inventory _inventory;
     private ContainerWidget _container;
     private Size boxSize;
@@ -24,44 +51,56 @@ public class InventoryWidget : StatefulWidget
         ) : base(rect, OnClick: OnClick, debug: debug)
     {
         _inventory = inventory;
-        _lastInventoryStorage = _inventory.ItemNumber;
-        _lastSelectedItemIndex = inventory.SelectedItemIndex;
+        _lastState = InventoryState.FromInventory(_inventory);
         boxSize = new Size(70, 70);
         Build();
     }
 
     public InventoryWidget(
-        Size size, 
+        Size size,
         Inventory inventory,
         bool debug = false,
         Action OnClick = null
-        ) : this(new Rectangle(0,0,size.Width, size.Height), inventory, debug, OnClick) 
-    {}
+        ) : this(new Rectangle(0, 0, size.Width, size.Height), inventory, debug, OnClick)
+    { }
 
-    public InventoryWidget( 
+    public InventoryWidget(
         Inventory inventory,
         bool debug = false,
         Action OnClick = null
-        ) : this(Rectangle.Empty, inventory, debug, OnClick) 
-    {}
+        ) : this(Rectangle.Empty, inventory, debug, OnClick)
+    { }
 
-    public override int X {get {return _rect.X;} set {
-        _rect.X = value; 
-    }}
-    public override int Y {get {return _rect.Y;} set {
-        _rect.Y = value; 
-    }}
+    public override int X
+    {
+        get { return _rect.X; }
+        set
+        {
+            _rect.X = value;
+        }
+    }
+    public override int Y
+    {
+        get { return _rect.Y; }
+        set
+        {
+            _rect.Y = value;
+        }
+    }
 
     public override void Build()
     {
         List<Widget> w = [];
         int i = 1;
+        Console.WriteLine("-------------------");
+        _inventory.PrintInventory();
+        Console.WriteLine("-------------------");
         foreach (var item in _inventory.Items)
         {
             w.Add(
                 new ContainerWidget(
                     alignItem: Align.Vertical,
-                    widgets:[
+                    widgets: [
                         new ContainerWidget(
                             size: boxSize,
                             padding: new Padding(all: 10),
@@ -92,7 +131,7 @@ public class InventoryWidget : StatefulWidget
         _cursor = Content.Load<Texture2D>("Inventory/cursor");
         _container.Load(Content);
         _loaded = true;
-    }       
+    }
 
     public void Action()
     {
@@ -107,14 +146,11 @@ public class InventoryWidget : StatefulWidget
             Action();
         }
 
-        if (_inventory.ItemNumber != _lastInventoryStorage)
+        var currentState = InventoryState.FromInventory(_inventory);
+        if (_lastState.IsDifferentFrom(currentState))
         {
-            _lastInventoryStorage = _inventory.ItemNumber;
-            SetState();
-        }
-        if (_inventory.SelectedItemIndex != _lastSelectedItemIndex)
-        {
-            _lastSelectedItemIndex = _inventory.SelectedItemIndex;
+            Console.WriteLine("rebuild of inventory");
+            _lastState = currentState;
             SetState();
         }
         _container.Update(gameTime);
@@ -126,7 +162,7 @@ public class InventoryWidget : StatefulWidget
     public override void Draw(SpriteBatch _spriteBatch)
     {
         _container.Draw(_spriteBatch);
-        _spriteBatch.Draw(_cursor, new Rectangle(_rect.X + (_lastSelectedItemIndex * boxSize.Width), _rect.Y, boxSize.Width, boxSize.Height), Color.White);
+        _spriteBatch.Draw(_cursor, new Rectangle(_rect.X + (_inventory.SelectedItemIndex * boxSize.Width), _rect.Y, boxSize.Width, boxSize.Height), Color.White);
         base.Draw(_spriteBatch);
     }
 }

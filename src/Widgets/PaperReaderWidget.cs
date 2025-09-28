@@ -1,6 +1,7 @@
 
 
 using System;
+using System.ComponentModel;
 using System.Reflection.Metadata;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -13,14 +14,14 @@ public class PaperReaderWidget : Widget
     public ContainerWidget _container;
 
     public PaperReaderWidget(
-        Rectangle rect, 
+        Rectangle rect,
         string text = "",
         bool debug = false,
         Action OnClick = null
-        ) : base(rect, OnClick:OnClick, debug: debug)
+        ) : base(rect, OnClick: OnClick, debug: debug)
     {
         _text = text;
-        Size s = new Size(Utils.GetPercentageInt(_rect.Width, 90), Utils.GetPercentageInt(_rect.Height, 90));
+        Size s = new Size(Utils.GetValueByPercentage(_rect.Width, 90), Utils.GetValueByPercentage(_rect.Height, 90));
         _container = new ContainerWidget(
             rect: _rect,
             mainAxisAlignment: MainAxisAlignment.Center,
@@ -28,11 +29,21 @@ public class PaperReaderWidget : Widget
             backgroundImage: new ImageWidget(src: "Items/paper_panel"),
             padding: new Padding(all: 20),
             widgets: [
-                new SizedBox(
-                    size: new Size(s.Width,s.Height),
-                    // debug:true,
-                    child: new TextWidget(_text, color: Color.Black, font: CFonts.Minecraft_24)
-                ),
+                new ScrollViewWidget(
+                    child: new ContainerWidget(
+                        rect: _rect,
+                        mainAxisAlignment: MainAxisAlignment.Start,
+                        crossAxisAlignment: CrossAxisAlignment.Center,
+                        alignItem: Align.Vertical,
+                        widgets: [
+                            new SizedBox(
+                                size: new Size(s.Width,s.Height),
+                                child: new TextWidget(_text, color: Color.Black, font: CFonts.Minecraft_24),
+                                debug:false
+                            ),
+                        ]
+                    )
+                )
             ]
         );
     }
@@ -84,6 +95,7 @@ public class PaperReaderWidget : Widget
         _spriteBatch.Begin();
         _container.Draw(_spriteBatch);
         base.Draw(_spriteBatch);
-        
+        _spriteBatch.End();
+        SpriteBatchContext.ApplyToContext(_spriteBatch, SpriteBatchContext.Top);
     }
 }

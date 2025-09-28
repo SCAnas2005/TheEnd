@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace TheEnd;
 
@@ -13,7 +14,6 @@ public class Game1 : Game
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
-
     }
 
     protected override void Initialize()
@@ -48,11 +48,12 @@ public class Game1 : Game
     protected override void Update(GameTime gameTime)
     {
         // Gère les entrées du joueur ou autres logiques de jeu ici
-        InputManager.Update();  
+        InputManager.Update();
+        AudioStreamPlayerManager.Update();
 
         SceneManager.CurrentScene.Update(gameTime);
 
-        if (InputManager.IsPressed(Microsoft.Xna.Framework.Input.Keys.Escape))
+        if (InputManager.AreKeysPressedTogether(Keys.LeftShift, Keys.Escape))
         {
             Exit();
         }
@@ -65,13 +66,14 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.Transparent);
 
         // Commence à dessiner avec le SpriteBatch
-        _spriteBatch.Begin();
-
+        var state = new SpriteBatchState();
+        SpriteBatchContext.Push(state);
+        SpriteBatchContext.ApplyToContext(_spriteBatch, SpriteBatchContext.Top);
 
         SceneManager.CurrentScene.Draw(_spriteBatch);
-
         // Fin du dessin
         _spriteBatch.End();
+        SpriteBatchContext.Pop();
 
         base.Draw(gameTime);
     }

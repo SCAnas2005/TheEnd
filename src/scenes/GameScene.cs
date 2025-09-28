@@ -6,12 +6,17 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
 using TheEnd;
 
-public enum MapScene {
+public enum MapScene
+{
+    Labo,
     City1,
     Home,
+    Grange1,
 }
 
 public class GameScene : Scene {
@@ -24,43 +29,69 @@ public class GameScene : Scene {
     private (int, int) playerPos;
 
     private Dictionary<MapScene, Map> _maps;
+    public Dictionary<MapScene, Map> Maps { get => _maps; }
+    private Dictionary<MapScene, bool> _itemsCreated = new();
+    private Dictionary<MapScene, bool> _entitiesCreated = new();
     private MapScene _mapScene;
 
-    private Map CurrentMapScene {get {return _maps[_mapScene];}}
+    private Map CurrentMap {get {return _maps[_mapScene];}}
 
-    public Dictionary<MapScene, List<InteractionObject>> InteractionObjects;
+    // public Dictionary<MapScene, List<InteractionObject>> InteractionObjects;
 
-    private Chrono _chrono;
+    public Player _player;
 
-    private Player _player;
-    public List<Zombies> _zombies;
 
-    public List<Item> _items;
+    public List<Vector2> path = null;
 
 
     public GameScene(SceneState screenState, Rectangle rect, bool debug = false, Action OnClose = null) : base(screenState: screenState, rect: rect, debug: debug, OnClose: OnClose)
     {
-
         _maps = [];
+        _itemsCreated = [];
         playerPos = (10, 10);
-        _zombies = [];
-        _items = [];
+
 
         _InfoRect = new Rectangle(_rect.X, _rect.Height - 200, _rect.Width, 200);
         _InfoRectRight = new Rectangle(_rect.Width - 400, _rect.Y, 400, _rect.Height);
 
-        InteractionObjects = [];
+        // InteractionObjects = [];
+        InteractionObjectsManager.Init();
         CreateAllMaps();
+    }
+
+    public void ReInit()
+    {
+        _maps = [];
+        _itemsCreated = [];
+        playerPos = (10, 10);
+        _InfoRect = new Rectangle(_rect.X, _rect.Height - 200, _rect.Width, 200);
+        _InfoRectRight = new Rectangle(_rect.Width - 400, _rect.Y, 400, _rect.Height);
+        InteractionObjectsManager.Init();
+
+        CreateAllMaps();
+        Load(Globals.Content);
     }
 
     public void CreateAllMaps()
     {
         MapScene i = MapScene.City1;
-        _maps[i] = new Map(rect: Rectangle.Empty, src:"Maps/map", name: "City1", scene: i, debug:false);
+        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/map", name: "City1", scene: i, zoom: 4.5f, debug: false);
+        _itemsCreated[i] = false;
+        _entitiesCreated[i] = false;
         i = MapScene.Home;
-        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/home_map", name: "Home", scene: i, debug:false);
+        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/home_map", name: "Home", scene: i, zoom: 1.3f, debug: false);
+        _itemsCreated[i] = false;
+        _entitiesCreated[i] = false;
+        i = MapScene.Grange1;
+        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/grange_inside", name: "Grange1", scene: i, zoom: 1.3f, debug: false);
+        _itemsCreated[i] = false;
+        _entitiesCreated[i] = false;
+        i = MapScene.Labo;
+        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/lab", name: "Labo", scene: i, zoom: 4.5f, debug: false);
+        _itemsCreated[i] = false;
+        _entitiesCreated[i] = false;
 
-        _mapScene = MapScene.City1;
+        _mapScene = MapScene.Labo;
     }
 
 
@@ -70,336 +101,674 @@ public class GameScene : Scene {
         if (!_maps[_mapScene].Loaded)
         {
             _maps[_mapScene].Load(Globals.Content);
-            CreateItemsForScene(_mapScene);
+            if (!_itemsCreated[_mapScene])
+                CreateItemsForScene(_mapScene);
+            if (!_entitiesCreated[_mapScene])
+                CreateEntitiesForScene(_mapScene);
             CreateInteractionsForMapScene(_mapScene);
         }
         if (newPlayerPos != null)
             _player.Position = newPlayerPos.Value;
-        _player.SetNewMap(CurrentMapScene);
+        _player.SetNewMap(CurrentMap);
+        Camera2D.Init(Globals.Graphics.GraphicsDevice.Viewport, CurrentMap);
 
-        Console.WriteLine($"Changing map to {_mapScene}");
     }
 
 
+    public void CreateEntitiesForScene(MapScene scene)
+    {
+        TiledMapObjectLayer entitiesLayer;
+        if ((entitiesLayer = _maps[scene].GetAllEntities()) != null)
+        {
+            Entity i = null;
+            foreach (var entity in entitiesLayer.Objects)
+            {
+                if (entity.Properties["type"] == "barrel")
+                {
+                    i = new BarrelEntity(
+                        rect: new Rectangle(
+                            x: (int)Map.GetPosFromMap((int.Parse(entity.Properties["posL"]), int.Parse(entity.Properties["posC"])), CurrentMap.TileSize).X,
+                            y: (int)Map.GetPosFromMap((int.Parse(entity.Properties["posL"]), int.Parse(entity.Properties["posC"])), CurrentMap.TileSize).Y,
+                            width: CurrentMap.TileSize.Width,
+                            height: CurrentMap.TileSize.Height
+                        ),
+                        map: _maps[scene]
+                    );
+                    Console.WriteLine("new barrel: " + entity.Properties["posL"]);
+                }
+
+                if (i != null) { i?.Load(Globals.Content); EntityManager.AddEntity(i); }
+            }
+
+            var posS = Map.GetPosFromMap((50,-10), _maps[scene].TileSize);
+            var posE = Map.GetPosFromMap((80 ,150), _maps[scene].TileSize);
+
+            Entity fog = new FogEntity(
+                rect: new Rectangle(
+                    x: (int)posS.X, y: (int)posS.Y,
+                    width: (int)(posE-posS).X, height: (int)(posE-posS).Y
+                ),
+                map: _maps[scene]
+            );
+
+            EntityManager.AddEntity(fog);
+
+            _entitiesCreated[scene] = true;
+            Console.WriteLine("Entities imported");
+
+        }
+
+
+        if (scene == MapScene.City1 || scene == MapScene.Labo)
+        {
+            Npc e = new(
+                rect: new Rectangle(
+                    x: (playerPos.Item2 + 5) * _maps[scene].TileSize.Width,
+                    y: (playerPos.Item1 + 5) * _maps[scene].TileSize.Height,
+                    width: Sprite.GetSpriteSize(_maps[scene]).Width,
+                    height: Sprite.GetSpriteSize(_maps[scene]).Height
+                ),
+                config: NpcManager.GetConfigByName("Marc"),
+                src: "", speed: 2f, health: 100, map: _maps[scene], debug: true
+            );
+            e.Load(Globals.Content);
+            NpcManager.AddNpc(e);
+
+            var npcs = NpcManager.CreateUselessNpcs(100);
+            var pos = _maps[scene].GetAllWalkablesPosition();
+
+            ZombieManager.AddZombie(ZombieManager.CreateBasicZombie(_player.Position + new Vector2(10, 0), _maps[scene]));
+            foreach (var npc in npcs)
+            {
+                var randomPos = pos[Utils.Random.Next(0, pos.Count)];
+                npc.Rect = new Rectangle(
+                    randomPos.col * CurrentMap.TileSize.Width,
+                    randomPos.row * CurrentMap.TileSize.Height,
+                    Sprite.GetSpriteSize(CurrentMap).Width,
+                    Sprite.GetSpriteSize(CurrentMap).Height
+                );
+                npc.Map = _maps[scene];
+
+                npc.Load(Globals.Content);
+                NpcManager.AddNpc(npc);
+            }
+        }
+    }
+
     public void CreateInteractionsForMapScene(MapScene scene)
     {
-        if (InteractionObjects.ContainsKey(scene)) { return; }
-        InteractionObjects[scene] = [];
-        foreach (var obj in _maps[scene].TiledMap.GetLayer<TiledMapObjectLayer>("Interaction").Objects)
+        if (InteractionObjectsManager.HasScene(scene)) return;
+        // if (InteractionObjects.ContainsKey(scene)) { return; }
+        // InteractionObjects[scene] = [];
+        var interactions = CurrentMap.GetAllInteractions();
+        if (interactions == null) return;
+        foreach (var obj in interactions.Objects)
         {
             InteractionObject i = null;
-            if (scene == MapScene.City1)
+            if (obj.Properties["type"] == "door")
             {
-                if (obj.Name == "home_door" && obj.Properties["type"] == "door")
-                {
-                    i = new TransitionDoorObject(
-                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                        type: obj.Properties["type"],
-                        mapScene: scene,
-                        name: obj.Name,
-                        l: int.Parse(obj.Properties["destinationL"]),
-                        c: int.Parse(obj.Properties["destinationC"]),
-                        destinationMap: Utils.StringMapNameToMapScene(obj.Properties["destinationMap"])
-                    );
-                }
+                i = new TransitionDoorObject(
+                    rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                    type: obj.Properties["type"],
+                    mapScene: scene,
+                    name: obj.Name,
+                    l: obj.Properties.TryGetValue("destinationL", out var lStr) && int.TryParse(lStr, out var lVal) ? lVal : null,
+                    c: obj.Properties.TryGetValue("destinationC", out var cStr) && int.TryParse(cStr, out var cVal) ? cVal : null,
+                    destinationMap: obj.Properties.TryGetValue("destinationMap", out var dmStr) ? Utils.StringMapNameToMapScene(obj.Properties["destinationMap"]) : null,
+                    state: bool.Parse(obj.Properties["state"])
+                );
             }
-            else if (scene == MapScene.Home)
+            if (obj.Name == "back_home_door" && obj.Properties["type"] == "door")
             {
-                if (obj.Name == "back_home_door" && obj.Properties["type"] == "door")
-                {
-                    i = new TransitionDoorObject(
-                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                        type: obj.Properties["type"],
-                        mapScene: MapScene.Home,
-                        name: obj.Name,
-                        l: int.Parse(obj.Properties["destinationL"]),
-                        c: int.Parse(obj.Properties["destinationC"]),
-                        destinationMap: Utils.StringMapNameToMapScene(obj.Properties["destinationMap"]),
-                        actionName: () => "[Sortir]",
-                        actionInstructions: () => "Appuyer sur [E] pour [Sortir]"
-                    );
-                }
-                if (obj.Name.Contains("home_door") && obj.Properties["type"] == "normal_door")
-                {
-                    i = new NormalDoorObject(
-                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                        type: obj.Properties["type"],
-                        mapScene: MapScene.Home,
-                        name: obj.Name,
-                        l: int.Parse(obj.Properties["posL"]),
-                        c: int.Parse(obj.Properties["posC"]),
-                        state: bool.Parse(obj.Properties["state"]),
-                        locked: bool.Parse(obj.Properties["locked"])
-                    );
-                }
-                if (obj.Name == "table_paper" && obj.Properties["type"] == "readable_paper")
-                {
-                    i = new ReadablePaperObject(
-                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                        type: obj.Properties["type"],
-                        mapScene: MapScene.Home,
-                        name: obj.Name,
-                        l: int.Parse(obj.Properties["posL"]),
-                        c: int.Parse(obj.Properties["posC"]),
-                        content: File.ReadAllText("data/letter.txt"),
-                        actionName: () => "[Lire]",
-                        actionInstructions: () => "Appuyer sur [E] pour [LIRE]"
-                    );
-                }
-                // if (obj.Name == "home_door_2" && obj.Properties["type"] == "normal_door")
-                // {
-                //     i = new NormalDoorObject(
-                //         rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                //         type: obj.Properties["type"],
-                //         mapScene: MapScene.Home,
-                //         name: obj.Name,
-                //         l: int.Parse(obj.Properties["posL"]),
-                //         c: int.Parse(obj.Properties["posC"]),
-                //         state: bool.Parse(obj.Properties["state"]),
-                //         locked: bool.Parse(obj.Properties["locked"])
-                //     );
-                // }
-                // if (obj.Name == "home_door_3" && obj.Properties["type"] == "normal_door")
-                // {
-                //     i = new NormalDoorObject(
-                //         rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                //         type: obj.Properties["type"],
-                //         mapScene: MapScene.Home,
-                //         name: obj.Name,
-                //         l: int.Parse(obj.Properties["posL"]),
-                //         c: int.Parse(obj.Properties["posC"]),
-                //         state: bool.Parse(obj.Properties["state"]),
-                //         locked: bool.Parse(obj.Properties["locked"])
-                //     );
-                // }
-                if (obj.Name == "home_armoire_cle" && obj.Properties["type"] == "armoire")
-                {
-                    i = new ArmoireObject(
-                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                        type: obj.Properties["type"],
-                        mapScene: MapScene.Home,
-                        name: obj.Name,
-                        l: int.Parse(obj.Properties["posL"]),
-                        c: int.Parse(obj.Properties["posC"]),
-                        item: obj.Properties["content"] == "" ? null : _items.FirstOrDefault(itm => itm.Name == "Secret key")
-                    );
-                }
-
-                if (obj.Name == "home_armoire_timmy" && obj.Properties["type"] == "armoire")
-                {
-                    i = new ArmoireObject(
-                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                        type: obj.Properties["type"],
-                        mapScene: MapScene.Home,
-                        name: obj.Name,
-                        l: int.Parse(obj.Properties["posL"]),
-                        c: int.Parse(obj.Properties["posC"]),
-                        item: obj.Properties["content"] == "" ? null : _items.FirstOrDefault(itm => itm.Name == "Photo de timmy")
-                    );
-                }
-
-                if (obj.Name.Contains("vide") && obj.Properties["type"] == "armoire")
-                {
-                    i = new ArmoireObject(
-                        rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                        type: obj.Properties["type"],
-                        mapScene: MapScene.Home,
-                        name: obj.Name,
-                        l: int.Parse(obj.Properties["posL"]),
-                        c: int.Parse(obj.Properties["posC"]),
-                        item: null
-                    );
-                }
+                i = new TransitionDoorObject(
+                    rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                    type: obj.Properties["type"],
+                    mapScene: MapScene.Home,
+                    name: obj.Name,
+                    l: obj.Properties.TryGetValue("destinationL", out var lStr) && int.TryParse(lStr, out var lVal) ? lVal : null,
+                    c: obj.Properties.TryGetValue("destinationC", out var cStr) && int.TryParse(cStr, out var cVal) ? cVal : null,
+                    destinationMap: obj.Properties.TryGetValue("destinationMap", out var dmStr) ? Utils.StringMapNameToMapScene(obj.Properties["destinationMap"]) : null,
+                    actionName: () => "[Sortir]",
+                    actionInstructions: () => "Appuyer sur [E] pour [Sortir]",
+                    state: bool.Parse(obj.Properties["state"])
+                );
             }
-            if (i != null) InteractionObjects[scene].Add(i);
+            if (obj.Properties["type"] == "normal_door")
+            {
+                i = new NormalDoorObject(
+                    rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                    type: obj.Properties["type"],
+                    mapScene: MapScene.Home,
+                    name: obj.Name,
+                    l: int.Parse(obj.Properties["posL"]),
+                    c: int.Parse(obj.Properties["posC"]),
+                    state: bool.Parse(obj.Properties["state"]),
+                    key_name: obj.Properties.TryGetValue("key", out var keyname) ? keyname : null,
+                    locked: bool.Parse(obj.Properties["locked"])
+                );
+            }
+            if (obj.Name == "table_paper" && obj.Properties["type"] == "readable_paper")
+            {
+                i = new ReadablePaperObject(
+                    rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                    type: obj.Properties["type"],
+                    mapScene: MapScene.Home,
+                    name: obj.Name,
+                    l: int.Parse(obj.Properties["posL"]),
+                    c: int.Parse(obj.Properties["posC"]),
+                    content: File.ReadAllText("data/letter.txt"),
+                    actionName: () => "[Lire]",
+                    actionInstructions: () => "Appuyer sur [E] pour [LIRE]"
+                );
+            }
+            if (obj.Name == "home_armoire_cle" && obj.Properties["type"] == "armoire")
+            {
+                i = new ArmoireObject(
+                    rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                    type: obj.Properties["type"],
+                    mapScene: MapScene.Home,
+                    name: obj.Name,
+                    l: int.Parse(obj.Properties["posL"]),
+                    c: int.Parse(obj.Properties["posC"]),
+                    item: obj.Properties["content"] == "" ? null : EntityManager.GetAll<Item>().FirstOrDefault(itm => itm.Name == "Secret key")
+                );
+            }
+
+            if (obj.Name == "home_armoire_timmy" && obj.Properties["type"] == "armoire")
+            {
+                i = new ArmoireObject(
+                    rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                    type: obj.Properties["type"],
+                    mapScene: MapScene.Home,
+                    name: obj.Name,
+                    l: int.Parse(obj.Properties["posL"]),
+                    c: int.Parse(obj.Properties["posC"]),
+                    item: obj.Properties["content"] == "" ? null : EntityManager.GetAll<Item>().FirstOrDefault(itm => itm.Name == "Photo de timmy")
+                );
+            }
+
+            if (obj.Name.Contains("vide") && obj.Properties["type"] == "armoire")
+            {
+                i = new ArmoireObject(
+                    rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                    type: obj.Properties["type"],
+                    mapScene: MapScene.Home,
+                    name: obj.Name,
+                    l: int.Parse(obj.Properties["posL"]),
+                    c: int.Parse(obj.Properties["posC"]),
+                    item: null
+                );
+            }
+
+            if (obj.Properties["type"] == "searchbox")
+            {
+                i = new SearchObject(
+                    rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
+                    mapScene: scene,
+                    itemToGive: null
+                );
+            } 
+            if (obj.Properties["type"] == "searchbox" && obj.Name == "deadman_grange")
+            {
+                Rectangle rect = new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height);
+                var item = new AppleItem(rect: rect, name: "", map: _maps[scene], dropped: false, debug: true);
+                ItemManager.AddAndLoad(item);
+                i = new SearchObject(
+                    rect: rect,
+                    mapScene: scene,
+                    itemToGive: item
+                );
+            } 
+
+            if (i != null)
+            {
+                i.Load(Globals.Content);
+                InteractionObjectsManager.Add(scene, i);
+                // InteractionObjects[scene].Add(i);
+            }
         }
     }
 
     public void CreateItemsForScene(MapScene scene)
     {
         Item i;
+        if (scene == MapScene.City1)
+        {
+            for (int l = 0; l < 1; l++)
+            {
+                i = new AmmoItem(
+                    rect: new Rectangle(
+                        x: (int)Map.GetPosFromMap((10, 5), CurrentMap.TileSize).X,
+                        y: (int)Map.GetPosFromMap((10, 5), CurrentMap.TileSize).Y,
+                        width: CurrentMap.TileSize.Width,
+                        height: CurrentMap.TileSize.Height
+                    ),
+                    name: $"Ammo{l}",
+                    map: _maps[MapScene.City1]
+                );
+                i.Load(Globals.Content);
+                ItemManager.AddItem(i);
+            }
+
+
+            i = new MedkitItem(
+                rect: new Rectangle(
+                    x: (int)Map.GetPosFromMap((10, 10), CurrentMap.TileSize).X,
+                    y: (int)Map.GetPosFromMap((10, 10), CurrentMap.TileSize).Y,
+                    width: CurrentMap.TileSize.Width,
+                    height: CurrentMap.TileSize.Height
+                ),
+                name: $"Medkit",
+                map: _maps[MapScene.City1]
+            );
+            i.Load(Globals.Content);
+            ItemManager.AddItem(i);
+
+
+            i = new AppleItem(
+                rect: new Rectangle(
+                    x: (int)Map.GetPosFromMap((15, 15), CurrentMap.TileSize).X,
+                    y: (int)Map.GetPosFromMap((15, 15), CurrentMap.TileSize).Y,
+                    width: CurrentMap.TileSize.Width,
+                    height: CurrentMap.TileSize.Height
+                ),
+                name: $"Medkit",
+                map: _maps[MapScene.City1]
+            );
+            i.Load(Globals.Content);
+            ItemManager.AddItem(i);
+
+            i = new GasMaskItem(
+                rect: new Rectangle(
+                    x: (int)Map.GetPosFromMap((15, 16), CurrentMap.TileSize).X,
+                    y: (int)Map.GetPosFromMap((15, 16), CurrentMap.TileSize).Y,
+                    width: CurrentMap.TileSize.Width,
+                    height: CurrentMap.TileSize.Height
+                ),
+                name: $"Gas Mask",
+                map: _maps[MapScene.City1]
+            );
+            i.Load(Globals.Content);
+            ItemManager.AddItem(i);
+        }
+        
+
+
+
         if (scene == MapScene.Home)
         {
-            i = new Weapon(
+            i = new MachineGun(
                 rect: new Rectangle(
-                    x: (int)Map.GetPosFromMap((5, 20), CurrentMapScene.TileSize).X,
-                    y: (int)Map.GetPosFromMap((5, 20), CurrentMapScene.TileSize).Y,
-                    width: CurrentMapScene.TileSize.Width,
-                    height: CurrentMapScene.TileSize.Height
+                    x: (int)Map.GetPosFromMap((5, 20), CurrentMap.TileSize).X,
+                    y: (int)Map.GetPosFromMap((5, 20), CurrentMap.TileSize).Y,
+                    width: CurrentMap.TileSize.Width,
+                    height: CurrentMap.TileSize.Height
                 ),
-                src: "Weapons/Guns/gun",
-                name: "Gun",
+                name: "First gun",
                 map: _maps[scene],
-                mapScene: scene
+                owner: null,
+                dropped: true
             );
-
             i.Load(Globals.Content);
-            _items.Add(i);
+            ItemManager.AddItem(i);
 
-            i = new KeyItem(new Rectangle(120, 20, 16, 10), "Items/secret_key", name: "Secret key", doorToUnlock: "home_door_2", _maps[_mapScene], _mapScene, dropped: false);
+            i = new KeyItem(new Rectangle(120, 20, 16, 10), "Items/secret_key", name: "Secret key", doorToUnlock: "home_door_2", _maps[_mapScene], dropped: false);
             i.Load(Globals.Content);
-            _items.Add(i);
-            
+            ItemManager.AddItem(i);
+
             i = new PhotoItem(
                 rect: new Rectangle(
                     (int)Map.GetPosFromMap((5, 13), _maps[_mapScene].TileSize).X,
                     (int)Map.GetPosFromMap((5, 13), _maps[_mapScene].TileSize).Y,
-                    CurrentMapScene.TileSize.Width,
-                    CurrentMapScene.TileSize.Height
+                    CurrentMap.TileSize.Width,
+                    CurrentMap.TileSize.Height
                 ),
                 src: "family/timmy",
                 name: "Photo de timmy",
                 map: _maps[scene],
-                mapScene: scene,
                 dropped: false
             );
 
             i.Load(Globals.Content);
-            _items.Add(i);
+            ItemManager.AddItem(i);
         }
+
+        if (scene == MapScene.Labo)
+        {
+            i = new Gun(
+                rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()),
+                name: "test",
+                map: CurrentMap,
+                owner: _player
+            );
+            i.IsDropped = false;
+            _player.Inventory.AddItem(i);
+            ItemManager.AddAndLoad(i);
+
+
+            i = new BookItem(
+                rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(8).ToPoint()),
+                src: "items/logbook",
+                name: "Logbook",
+                map: CurrentMap
+            )
+            {
+                IsDropped = false,
+                Content = new BookStruct(3),
+            };
+
+            var book = ((BookItem)i).Content;
+            var page = book.GetPage(1);
+            page.Title = "My First title";
+            page.Content = "Content of the body, ecqfsjdmlfjq\nfdjsklfmjsqdlfjsqd\nfdsmqljfslqdjfmlsdqkfjmlsdqkfjmlsqdfksqd\nsdmlfkjsdq lfksdq jmflksdjf mlsqdkjf sdlqmfjsdq mlfkjsdmlfk sqdjmflksdq fj";
+            page.Foot = "foot here";
+
+            var page2 = book.GetPage(2);
+            page2.Title = "Cristiano ronaldo siuu";
+            page2.Content = "Siuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu";
+            page2.Foot = "test";
+
+
+            var page3 = book.GetPage(3);
+            page3.Title = "fdlkqjfmlkdsjfmlksqj ffsq";
+            page3.Content = "fdsmlkqfjsmqdkljfsmlqdkfjsmlqdk fjsdmqkl fjsq";
+            page3.Foot = "fdsqlkjfsdlkfjs";
+
+            _player.Inventory.AddItem(i);
+            ItemManager.AddAndLoad(i);
+        }
+
+
+
+        _itemsCreated[scene] = true;
     }
+
 
     public override void Load(ContentManager Content)
     {
-        CurrentMapScene.Load(Content);
-        Console.WriteLine($"Map is loaded: {CurrentMapScene.Loaded}");
+        NpcManager.Init();
+        CurrentMap.Load(Content);
+        AudioManager.Init();
+        Camera2D.Init(Globals.Graphics.GraphicsDevice.Viewport, CurrentMap);
+        NotificationManager.Init();
+        Console.WriteLine($"Map is loaded: {CurrentMap.Loaded}");
         _player = new Player(
             rect: new Rectangle(
-                playerPos.Item2 * CurrentMapScene.TileSize.Width,
-                playerPos.Item1 * CurrentMapScene.TileSize.Height,
-                CurrentMapScene.TileSize.Width - 3,
-                CurrentMapScene.TileSize.Height - 3
+                playerPos.Item2 * CurrentMap.TileSize.Width,
+                playerPos.Item1 * CurrentMap.TileSize.Height,
+                Sprite.GetSpriteSize(CurrentMap).Width,
+                Sprite.GetSpriteSize(CurrentMap).Height
             ),
             src: "Player/idle",
             name: "Jason",
             speed: 5,
             health: 100,
-            map: CurrentMapScene,
+            map: CurrentMap,
             debug: true
         );
+        EntityManager.AddEntity(_player);
 
-        var pos = CurrentMapScene.GetAllWalkablesPosition();
-        for (int i = 0; i < 1; i++)
+        Camera2D.Position = _player.Position;
+
+        var pos = CurrentMap.GetAllWalkablesPosition();
+        for (int i = 0; i < 5; i++)
         {
-            var randomPos = (17, 15);//pos[Utils.Random.Next(0, pos.Count)];
+            var randomPos = pos[Utils.Random.Next(0, pos.Count)];
             var zombie = new Zombies(
                 rect: new Rectangle(
-                    randomPos.Item2 * CurrentMapScene.TileSize.Width,
-                    randomPos.Item1 * CurrentMapScene.TileSize.Height,
-                    CurrentMapScene.TileSize.Width - 3,
-                    CurrentMapScene.TileSize.Height - 3
+                    randomPos.Item2 * CurrentMap.TileSize.Width,
+                    randomPos.Item1 * CurrentMap.TileSize.Height,
+                    Sprite.GetSpriteSize(CurrentMap).Width,
+                    Sprite.GetSpriteSize(CurrentMap).Height
                 ),
                 src: "",
-                speed: 3,
+                speed: 2,
                 health: 50,
-                map: CurrentMapScene,
-                mapScene: MapScene.City1,
+                map: CurrentMap,
                 debug: true
             );
-            zombie.player = _player;
-            _zombies.Add(zombie);
+            ZombieManager.AddZombie(zombie);
         }
 
         CreateItemsForScene(_mapScene);
+        CreateEntitiesForScene(_mapScene);
         CreateInteractionsForMapScene(_mapScene);
 
-        _player.Map = CurrentMapScene;
-        _player.Load(Content);
-        foreach (var z in _zombies)
-        {
-            z.Load(Content);
-        }
-        foreach (var itm in _items)
-        {
-            itm.Load(Content);
-        }
+        _player.Map = CurrentMap;
+        _player.zombies = ZombieManager.Zombies;
+
+        EntityManager.Player = _player;
+
+
+        EntityManager.LoadEntities(Content);
 
         _inventoryWidget = new InventoryWidget(
             rect: new Rectangle(_InfoRect.X + 10, _InfoRect.Y + 10, _InfoRect.Width - 10, _InfoRect.Height),
             inventory: _player.Inventory
         );
-
         _userInfo = new UserInfoWidget(
             rect: _InfoRectRight,
             player: _player,
-            debug:true
+            debug: true
         );
 
         _inventoryWidget.Load(Content);
         _userInfo.Load(Content);
+        QuestManager.CreateAllQuests(_player);
+
+        Console.WriteLine("[+] GameScene loaded");
+
+        AdminPanel.Instance = new AdminPanel();
+        AdminPanel.Instance.Load(Content);
     }
 
     public override void Update(GameTime gameTime)
     {
-        CurrentMapScene.Update(gameTime);
+        // CurrentMapScene.CalculateViewPosition(Camera2D.GetViewMatrix());
+        CurrentMap.Update(gameTime);
+        NotificationManager.Update(gameTime);
+        TimerManager.Update(gameTime);
+        Camera2D.Update(gameTime);
+        QuestManager.Update(_player);
+        CameraCinematicController.Update(gameTime);
+        DialogManager.Instance.Update(gameTime);
+
         var currentScene = _mapScene;
 
-        if (InteractionObjects.TryGetValue(currentScene, out var objects))
-        {
-            foreach (var obj in objects.ToList()) // .ToList() évite aussi les erreurs de modification
-            {
-                obj.Update(gameTime, CurrentMapScene, _player);
-
-                // Si la scène a changé (par ex : par une porte), on arrête ici
-                if (_mapScene != currentScene)
-                    break;
-            }
-        }
-        _player.Update(gameTime);
-        foreach (var itm in _items)
-        {
-            if (itm.MapScene == _mapScene && itm.IsDropped)
-            {
-                itm.Update(gameTime, _player, CurrentMapScene);
-            }
-        }
-        foreach (var z in _zombies)
-        {
-            if (z.MapScene == _mapScene)
-            {
-                z.Update(gameTime);
-            }
-        }
+        EntityManager.Update(gameTime, CurrentMap);
 
 
+        // if (InteractionObjects.TryGetValue(currentScene, out var objects))
+        // {
+        //     foreach (var obj in objects.ToList()) // .ToList() évite aussi les erreurs de modification
+        //     {
+        //         obj.Update(gameTime, CurrentMapScene, _player);
+
+        //         // Si la scène a changé (par ex : par une porte), on arrête ici
+        //         if (_mapScene != currentScene)
+        //             break;
+        //     }
+        // }
+
+        InteractionObjectsManager.Update(gameTime, CurrentMap);
 
         _inventoryWidget.Update(gameTime);
-        _userInfo.Update(gameTime); 
+        _userInfo.Update(gameTime);
+        if (Camera2D.FocusOnPlayer)
+        {
+            Camera2D.LookAtPlayer(_player.Position, CurrentMap);
+        }
+        else
+        {
+            if (InputManager.IsHolding(Keys.Right))
+            {
+                Camera2D.Move(new Vector2(5, 0), CurrentMap);
+            }
+            else if (InputManager.IsHolding(Keys.Left))
+            {
+                Camera2D.Move(new Vector2(-5, 0), CurrentMap);
+            }
+            if (InputManager.IsHolding(Keys.Up))
+            {
+                Camera2D.Move(new Vector2(0, -5), CurrentMap);
+            }
+            else if (InputManager.IsHolding(Keys.Down))
+            {
+                Camera2D.Move(new Vector2(0, 5), CurrentMap);
+            }
+        }
+        if (InputManager.AreKeysPressedTogether(Keys.LeftControl, Keys.Up))
+        {
+            Camera2D.SetZoom(Camera2D.Zoom + 0.1f, CurrentMap);
+            Console.WriteLine("zoom : " + Camera2D.Zoom);
+        }
+        else if (InputManager.AreKeysPressedTogether(Keys.LeftControl, Keys.Down))
+        {
+            Camera2D.SetZoom(Camera2D.Zoom - 0.1f, CurrentMap);
+        }
+
+        if (InputManager.IsPressed(Keys.C))
+        {
+            Camera2D.FocusOnPlayer = !Camera2D.FocusOnPlayer;
+        }
+
+
+        if (InputManager.IsPressed(Keys.Escape))
+        {
+            PauseScene pause = new PauseScene(SceneState.Pause, rect: Globals.FullScreenRect, OnClose: () =>
+            {
+                SceneManager.ChangeScreen(SceneState.Game);
+                SceneManager.RemoveScene(SceneState.Pause);
+            });
+            pause.Load(Globals.Content);
+
+            SceneManager.AddScene(SceneState.Pause, pause);
+            SceneManager.ChangeScreen(SceneState.Pause);
+        }
+
+        if (InputManager.IsPressed(Keys.H))
+        {
+            Npc npc = (Npc)EntityManager.GetFirst(e => e is Npc);
+            if (npc != null)
+            {
+                var mousePos = Camera2D.ScreenToMap(InputManager.GetMousePosition());
+                path = CurrentMap.FindPath(npc.Position, mousePos);
+                path.Reverse();
+                npc.MovePath = path;
+                PathDrawer.AddPath(path);
+            }
+        }
+
+        if (InputManager.IsPressed(Keys.Space))
+        {
+            ZombieManager.SpawnZombiesGroup(10, _player.Position);
+        }
+
+        AdminPanel.Instance.Update(gameTime);
+        if (!AdminPanel.Instance.Show)
+        {
+            if (InputManager.AreKeysPressedTogether(Keys.LeftControl, Keys.A))
+            {
+                AdminPanel.Instance.Show = true;
+            }
+        }
     }
+
 
     public override void Draw(SpriteBatch _spriteBatch)
     {
-        _spriteBatch.End();
-        _spriteBatch.Begin(transformMatrix: CurrentMapScene.ScaleMatrix);
-        CurrentMapScene.Draw(_spriteBatch);
-        foreach (var itm in _items)
-        {
-            if (itm.MapScene == _mapScene && itm.IsDropped)
-            {
-                itm.Draw(_spriteBatch);
-            }
-        }
-        _player.Draw(_spriteBatch);
-        foreach (var obj in InteractionObjects[_mapScene])
-        {
-            obj.Draw(_spriteBatch);
+        var graphicsDevice = Globals.Graphics.GraphicsDevice;
 
-        }
-        foreach (var z in _zombies)
+        var oldViewport = graphicsDevice.Viewport;
+        // On crée un rectangle centré autour de ce point, taille 200x200 pixels
+        Rectangle renderRect = new Rectangle(
+            0,
+            0,
+            (int)(Camera2D.CameraLogicalSize.Width * CurrentMap.ScaleMatrix.M11),
+            (int)(Camera2D.CameraLogicalSize.Height * CurrentMap.ScaleMatrix.M22)
+        );
+        graphicsDevice.Viewport = new Viewport(renderRect.X, renderRect.Y, renderRect.Width, renderRect.Height);
+        _spriteBatch.End(); // Termine un éventuel Begin() précédent
+
+
+
+
+        // Affichage de la map
+        // Commence le batch avec transformation caméra + scale
+
+        var matrix = Camera2D.GetViewMatrix() * CurrentMap.ScaleMatrix;
+        var context = new SpriteBatchState(
+            transformMatrix: matrix,
+            rasterizerState: new RasterizerState { ScissorTestEnable = true },
+            samplerState: SamplerState.PointClamp
+        );
+        SpriteBatchContext.Push(context); // Push le batch
+        SpriteBatchContext.ApplyToContext(_spriteBatch, SpriteBatchContext.Top); // lance le back enpilé
+
+
+        //Dessine la map
+        CurrentMap.Draw(_spriteBatch);
+        foreach (var layer in CurrentMap.TiledMap.Layers)
         {
-            if (z.MapScene == _mapScene)
+            if (layer.Name != "forground")
             {
-                z.Draw(_spriteBatch);
+                SpriteBatchContext.Restart(_spriteBatch);
+                CurrentMap.DrawLayer(_spriteBatch, layer.Name);
             }
         }
-        Shape.DrawRectangle(_spriteBatch, CurrentMapScene.Rect, Color.Red);
-        _spriteBatch.End();
-        _spriteBatch.Begin();
+
+        SpriteBatchContext.Restart(_spriteBatch);
+
+        // Dessine tout ce qui doit suivre la caméra (joueur, items, ennemis, etc.)
+        EntityManager.Draw(_spriteBatch, CurrentMap);
+
+        // foreach (var obj in InteractionObjects[_mapScene])
+        // {
+        //     obj.Draw(_spriteBatch);
+        // }
+        InteractionObjectsManager.Draw(_spriteBatch, CurrentMap);
+        PathDrawer.Draw(_spriteBatch);
+
+
+
+        SpriteBatchContext.Restart(_spriteBatch);
+
+
+        CurrentMap.DrawLayer(_spriteBatch, "forground");
+
+        // Shape.DrawRectangle(_spriteBatch, new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, Camera2D.CameraLogicalSize.Width, Camera2D.CameraLogicalSize.Height), Color.Yellow);
+
+        _spriteBatch.End(); // Termine ce batch transformé
+        SpriteBatchContext.Pop(); // depile le batch crée
+
+        graphicsDevice.Viewport = oldViewport;
+
+        // Remet le rasterizer par défaut pour la suite
+        graphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+
+        // Démarre un nouveau batch SANS transformation pour l’UI
+        SpriteBatchContext.ApplyToContext(_spriteBatch, SpriteBatchContext.Top);
+
+        Shape.DrawRectangle(_spriteBatch, renderRect, Color.Purple);
+        _player.DrawPosition(_spriteBatch);
+
+
+
+        // Shape.FillRectangle(_spriteBatch, renderRect, Color.Yellow);
         _inventoryWidget.Draw(_spriteBatch);
-        _userInfo.Draw(_spriteBatch);
-        if (_debug)
+        if (QuestManager.IsPlayingQuest)
         {
-            DrawDebug(_spriteBatch);
+            Text.Write(_spriteBatch, $"[{QuestManager.CurrentQuest.Title}]", new Vector2(_InfoRect.X + 500, _InfoRect.Y), Color.White);
+            Text.Write(_spriteBatch, $"Goal: [{QuestManager.CurrentQuest.Description}]", new Vector2(_InfoRect.X + 500, _InfoRect.Y + 50), Color.White);
         }
+        _userInfo.Draw(_spriteBatch);
+        DialogManager.Instance.Draw(_spriteBatch);
+
+        NotificationManager.Draw(_spriteBatch);
+
+        if (AdminPanel.Instance.Show) AdminPanel.Instance.Draw(_spriteBatch);
+
+        if (_debug)
+            DrawDebug(_spriteBatch);
     }
 }

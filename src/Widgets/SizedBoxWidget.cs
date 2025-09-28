@@ -12,8 +12,10 @@ public class SizedBox : Widget
 {
     private Color? _bgColor;
     private Widget _child;
+    public Widget Child => _child;
     
-    public SizedBox(Rectangle rect, Color? backgroundColor = null, Widget child=null, bool debug=false) : base(rect, debug:debug) {
+    public SizedBox(Rectangle rect, Color? backgroundColor = null, Widget child = null, bool debug = false) : base(rect, debug: debug)
+    {
         _bgColor = backgroundColor;
         _child = child;
         UpdateLayout();
@@ -34,6 +36,7 @@ public class SizedBox : Widget
     public override void Update(GameTime gameTime) {
         base.Update(gameTime);
 
+
         _child?.Update(gameTime);
     }
 
@@ -50,10 +53,17 @@ public class SizedBox : Widget
     public void UpdateLayout()
     {
         if (_child == null) return;
-        
+
         if (_child is TextWidget)
         {
-            _child.Rect = Rect;
+            _child.Rect = Rect; // Retransformation du text widget, le rect va changer
+            if (_child.Size.Height > Size.Height)
+            {
+                Console.WriteLine("child size: "+_child.Size);
+                Console.WriteLine("previous size: " + Size);
+                Size = new Size(Size.Width, _child.Size.Height);
+                Console.WriteLine("new size: " + Size);
+            }
         }
     }
 

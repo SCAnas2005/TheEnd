@@ -24,6 +24,22 @@ public static class SceneManager
         CurrentScene = Scenes[SceneState];
     }
 
+    public static Scene GetScene(SceneState sceneStateToGet)
+    {
+        if (!Scenes.ContainsKey(sceneStateToGet)) return null;
+        return Scenes[sceneStateToGet];
+    }
+
+    public static void AddScene(SceneState newSceneState, Scene newScene)
+    {
+        Scenes[newSceneState] = newScene;
+    }
+
+    public static void RemoveScene(SceneState sceneStateToRemove)
+    {
+        Scenes.Remove(sceneStateToRemove);
+    }
+
     public static void ChangeScreen(SceneState newScene)
     {
         Console.WriteLine($"[{SceneState}] => [{newScene}]");

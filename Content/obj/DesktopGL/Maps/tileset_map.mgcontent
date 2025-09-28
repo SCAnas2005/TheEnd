@@ -3,7 +3,7 @@
   <SourceFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/tileset_map.png</SourceFile>
   <SourceTime>2025-05-11T20:16:14.7028631+02:00</SourceTime>
   <DestFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Maps/tileset_map.xnb</DestFile>
-  <DestTime>2025-05-22T20:40:32.7275606+02:00</DestTime>
+  <DestTime>2025-08-19T11:54:37.2608815+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2024-08-16T19:05:56+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
@@ -15,6 +15,26 @@
   <Parameters>
     <Key>ColorKeyEnabled</Key>
     <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>GenerateMipmaps</Key>
+    <Value>False</Value>
+  </Parameters>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>ResizeToPowerOfTwo</Key>
+    <Value>False</Value>
+  </Parameters>
+  <Parameters>
+    <Key>MakeSquare</Key>
+    <Value>False</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Color</Value>
   </Parameters>
   <Dependencies />
   <BuildAsset />

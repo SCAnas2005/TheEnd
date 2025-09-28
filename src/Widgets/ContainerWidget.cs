@@ -235,9 +235,8 @@ public class ContainerWidget : Widget
                 widget.X = temp_x;
             }
 
-            if (widget is ContainerWidget)
+            if (widget is ContainerWidget w)
             {
-                ContainerWidget w = (ContainerWidget)widget;
                 w.UpdateLayout();
             }
         }
@@ -249,7 +248,96 @@ public class ContainerWidget : Widget
 
     public Padding GetPadding() { return _padding; }
 
-    public Size GetChildsSize(Align align=Align.Horizontal)
+    // public Size GetChildsSize(Align align = Align.Horizontal)
+    // {
+    //     if (_widgets.Count == 0) return Size.Empty;
+
+    //     int totalWidth = 0, totalHeight = 0;
+    //     int lineWidth = 0, lineHeight = 0;
+
+    //     if (align == Align.Horizontal && _wrap)
+    //     {   
+    //         foreach (var widget in _widgets)
+    //         {
+    //             if (lineWidth + widget.Rect.Width > _rect.Width) // dépasse le container → retour ligne
+    //             {
+    //                 totalWidth = Math.Max(totalWidth, lineWidth);
+    //                 totalHeight += lineHeight;
+
+    //                 lineWidth = 0;
+    //                 lineHeight = 0;
+    //             }
+
+    //             lineWidth += widget.Rect.Width;
+    //             lineHeight = Math.Max(lineHeight, widget.Rect.Height);
+    //         }
+
+    //         // ajouter la dernière ligne
+    //         totalWidth = Math.Max(totalWidth, lineWidth);
+    //         totalHeight += lineHeight;
+
+    //         return new Size(totalWidth, totalHeight);
+    //     }
+    //     else if (align == Align.Vertical && _wrap)
+    //     {
+    //         foreach (var widget in _widgets)
+    //         {
+    //             if (lineHeight + widget.Rect.Height > _rect.Height) // dépasse → nouvelle colonne
+    //             {
+    //                 totalHeight = Math.Max(totalHeight, lineHeight);
+    //                 totalWidth += lineWidth;
+
+    //                 lineHeight = 0;
+    //                 lineWidth = 0;
+    //             }
+
+    //             lineHeight += widget.Rect.Height;
+    //             lineWidth = Math.Max(lineWidth, widget.Rect.Width);
+    //         }
+
+    //         // dernière colonne
+    //         totalHeight = Math.Max(totalHeight, lineHeight);
+    //         totalWidth += lineWidth;
+
+    //         return new Size(totalWidth, totalHeight);
+    //     }
+
+    //     // Cas normal (pas de wrap)
+    //     int w = 0, h = 0;
+    //     int w_max = _widgets[0].Rect.Width;
+    //     int h_max = _widgets[0].Rect.Height;
+
+    //     foreach (var widget in _widgets)
+    //     {
+    //         if (align == Align.Horizontal)
+    //         {
+    //             w += widget.Rect.Width;
+    //             h_max = Math.Max(h_max, widget.Rect.Height);
+    //         }
+    //         else
+    //         {
+    //             h += widget.Rect.Height;
+    //             w_max = Math.Max(w_max, widget.Rect.Width);
+    //         }
+    //     }
+
+    //     return align == Align.Horizontal ? new Size(w, h_max) : new Size(w_max, h);
+    // }
+
+    public T GetFirstChild<T>() where T : Widget
+    {
+        foreach (var w in _widgets)
+        {
+            if (w is T t)
+            {
+                return t;
+            }
+        }
+        return null;
+    }
+
+
+    public Size GetChildsSize(Align align = Align.Horizontal)
     {
         int w = 0, h = 0;
         int w_max = _widgets.Count > 0 ? _widgets[0].Rect.Width : 0;
@@ -259,7 +347,7 @@ public class ContainerWidget : Widget
         {
             if (align == Align.Horizontal)
             {
-                w += widget.Rect.Width; 
+                w += widget.Rect.Width;
                 if (widget.Rect.Height > h_max) h_max = widget.Rect.Height;
             }
             else
@@ -268,7 +356,7 @@ public class ContainerWidget : Widget
                 if (widget.Rect.Width > w_max) w_max = widget.Rect.Width;
             }
         }
-        return align == Align.Horizontal ? new Size(w, h_max) : new Size(w_max, h); 
+        return align == Align.Horizontal ? new Size(w, h_max) : new Size(w_max, h);
     }
 
     public override void Load(ContentManager Content)
@@ -316,11 +404,11 @@ public class ContainerWidget : Widget
     public void Draw(SpriteBatch _spriteBatch, bool drawChilds = true)
     {
         base.Draw(_spriteBatch);
-        _border.Draw(_spriteBatch, _rect);
         if (_bgColor != null) Shape.FillRectangle(_spriteBatch, _rect, (Color)_bgColor);
         _backgroundImage?.Draw(_spriteBatch);
         if (drawChilds)
             DrawChilds(_spriteBatch);
+        _border.Draw(_spriteBatch, _rect);
     }
 
     public void DrawChilds(SpriteBatch _spriteBatch)

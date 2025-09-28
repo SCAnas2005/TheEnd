@@ -1,22 +1,26 @@
 using System;
+using Microsoft.Xna.Framework;
 
 public class Node
 {
-    public int X, Y;
-    public int G, H;
-    public int F => G + H;
+    public Point Position;
+    public float G, H;
+    public float F => G + H;
     public Node Parent;
 
-    public Node(int x, int y, Node parent = null)
+    public Node(Point position, float g, float h, Node parent = null)
     {
-        X = x;
-        Y = y;
+        Position = position;
+        G = g;
+        H = h;
         Parent = parent;
     }
 
     public override bool Equals(object obj)
-        => obj is Node other && X == other.X && Y == other.Y;
+        => obj is Node other && Position == other.Position;
 
     public override int GetHashCode()
-        => HashCode.Combine(X, Y);
+    {
+        throw new NotImplementedException();
+    }
 }
