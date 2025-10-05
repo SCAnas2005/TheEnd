@@ -16,7 +16,7 @@ public class Player : Sprite, IDamageable, IWeaponUser
     public Inventory Inventory;
     public int ZombieKilled;
 
-    public List<Zombies> zombies;
+    public List<Zombie> zombies;
 
     public bool IsTakingDamage = false;
     private float DamageAnimationRate = 500; // 500ms

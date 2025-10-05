@@ -29,10 +29,10 @@ public class NormalDoorObject : InteractionObject
         Rectangle rect,
         string type,
         string name,
-        MapScene mapScene,
+        Map map,
         int? l, int? c, bool state, bool locked, string key_name = null,
         Func<string> actionName = null, Func<string> actionInstructions = null
-    ) : base(rect, type, mapScene, name, l, c, actionName, actionInstructions)
+    ) : base(rect, type, map, name, l, c, actionName, actionInstructions)
     {
         this.state = state;
         this.locked = locked;
@@ -55,10 +55,11 @@ public class NormalDoorObject : InteractionObject
                 state = !state;
 
 
-                var obstaclesLayer = player.Map.TiledMap.GetLayer<TiledMapTileLayer>("obstacles");
-                var groundLayer = player.Map.TiledMap.GetLayer<TiledMapTileLayer>("ground");
+                var obstaclesLayer = Map.GetLayer<TiledMapTileLayer>("obstacles");
+                var groundLayer = Map.GetLayer<TiledMapTileLayer>("ground");
                 uint homeDoorClosedId = 179;
                 uint homeDoorOpenedId = 180;
+                uint oldId = state ? homeDoorClosedId : homeDoorOpenedId;
                 uint newId = state ? homeDoorOpenedId : homeDoorClosedId;
 
                 if (state)
@@ -73,8 +74,9 @@ public class NormalDoorObject : InteractionObject
                     obstaclesLayer.SetTile((ushort)c, (ushort)l, newId);
                     AudioManager.Play(_closeSound);
                 }
-                EditAction("interact", name: locked ? "Locked" : state ? "Fermer" : "Ouvrir");
-                player.Map.UpdateMapRenderer();
+                Console.WriteLine($"Changing tile map {Map}, tile[{c},{l}]:{oldId} => tile[{c},{l}]:{newId}");
+                EditAction("interact", name: locked ? "Locked" : state ? "Fermer" : "Ouvrir", description: "");
+                Map.UpdateMapRenderer();
             }
         );
     }
@@ -146,6 +148,7 @@ public class NormalDoorObject : InteractionObject
         base.Update(gametime, map, player);
         if (!locked)
         {
+
         }
         else
         {
@@ -160,8 +163,7 @@ public class NormalDoorObject : InteractionObject
                     if (key != null)
                     {
                         key.Unlock(this);
-                        player.Inventory.RemoveSelectedItem();
-                        key.KillMe = true;
+                        player.Inventory.RemoveSelectedItem().Kill();
                     }
                 }
             }

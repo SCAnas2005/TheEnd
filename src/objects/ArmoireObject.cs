@@ -13,11 +13,11 @@ public class ArmoireObject : InteractionObject
         Rectangle rect,
         string type,
         string name,
-        MapScene mapScene,
+        Map map,
         int? l, int? c,
         Item item,
         Func<string> actionName = null, Func<string> actionInstructions = null
-    ) : base(rect, type, mapScene, name, l, c, actionName, actionInstructions)
+    ) : base(rect, type, map, name, l, c, actionName, actionInstructions)
     {
         IsIntersectWithPlayer = false;
         Item = item;

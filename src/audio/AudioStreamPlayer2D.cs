@@ -2,12 +2,13 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using TheEnd;
 
 public class AudioStreamPlayer2D : AudioStreamPlayer
 {
     public Entity Entity;
     private Vector2 Position;
-    public float MinDistance { get; set; } = 50f;
+    public float MinDistance { get; set; } = 0f;
     public float MaxDistance { get; set; } = 500f;
 
     public Player Player;
@@ -36,15 +37,19 @@ public class AudioStreamPlayer2D : AudioStreamPlayer
     }
 
 
-    public void Update()
+    public override void Update()
     {
         Position = Entity.Position;
         UpdateVolume();
+        if (Entity.KillMe)
+        {
+            Destroy();
+        }
     }
 
     public void UpdateVolume()
     {
-        if (Instance == null || Player == null ) return;
+        if (Instance == null || Player == null) return;
 
         float dist = Vector2.Distance(Player.Position, Position);
         if (dist <= MinDistance) Volume = 1f;
@@ -55,5 +60,4 @@ public class AudioStreamPlayer2D : AudioStreamPlayer
             Volume = float.Lerp(1f, 0f, t); // atténuation linéaire }
         }
     }
-
 }

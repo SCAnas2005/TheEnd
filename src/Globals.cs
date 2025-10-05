@@ -1,4 +1,5 @@
 
+using System;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -12,6 +13,8 @@ public static class Globals
     public static float TileScale = 1;
 
     public static Rectangle FullScreenRect;
+
+    public static Action Exit;
 
     public static void Init(GraphicsDeviceManager graphics, ContentManager Content, Size screenSize)
     {

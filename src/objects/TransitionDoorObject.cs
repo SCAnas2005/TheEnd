@@ -13,13 +13,13 @@ public class TransitionDoorObject : InteractionObject
     public TransitionDoorObject(
         Rectangle rect,
         string type,
-        MapScene mapScene,
+        Map map,
         string name,
         int? l, int? c,
         MapScene? destinationMap,
         bool state,
         Func<string> actionName = null, Func<string> actionInstructions = null
-    ) : base(rect, type, mapScene, name, l, c, actionName, actionInstructions)
+    ) : base(rect, type, map, name, l, c, actionName, actionInstructions)
     {
         this.destinationMap = destinationMap;
         IsIntersectWithPlayer = false;

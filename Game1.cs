@@ -27,6 +27,8 @@ public class Game1 : Game
         IsMouseVisible = true;
         _graphics.ApplyChanges();
 
+        Globals.Exit = Exit;
+
         base.Initialize();
     }
 

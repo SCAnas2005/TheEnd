@@ -16,7 +16,7 @@ public abstract class InteractionObject
     public int? c;
     public string name;
 
-    public MapScene MapScene;
+    public Map Map;
 
     public Func<string> ActionName;
     public Func<string> ActionInstructions;
@@ -27,14 +27,15 @@ public abstract class InteractionObject
     public bool _destroy = false;
     public bool IsDestroyed { get => _destroy; }
 
-    public InteractionObject(Rectangle rect, string type, MapScene mapScene, string name, int? l, int? c, Func<string> actionName = null, Func<string> actionInstructions = null, Keys key = Keys.E)
+    public InteractionObject(Rectangle rect, string type, Map map, string name, int? l, int? c, Func<string> actionName = null, Func<string> actionInstructions = null, Keys key = Keys.E)
     {
-        this.Rect = rect;
+        Rect = rect;
         this.type = type;
         this.name = name;
         this.l = l; this.c = c;
         ActionName = actionName;
         ActionInstructions = actionInstructions;
+        Map = map;
 
         AddAction(
             name: "interact",

@@ -1,5 +1,7 @@
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 public static class AudioStreamPlayerManager
@@ -10,6 +12,11 @@ public static class AudioStreamPlayerManager
     {
         if (!_allStreams.Contains(stream))
             _allStreams.Add(stream);
+    }
+
+    public static void Remove(AudioStreamPlayer stream)
+    {
+        _allStreams.Remove(stream);
     }
 
     public static void Play(AudioStreamPlayer stream)
@@ -31,10 +38,12 @@ public static class AudioStreamPlayerManager
     {
         foreach (var s in _allStreams)
         {
-            if (s is AudioStreamPlayer2D s2d)
-            {
-                s2d.UpdateVolume();
-            }
+            s.Update();
         }
+        foreach (var stream in _allStreams.Where(s => s.Destroyed).ToList())
+        {
+            Remove(stream);
+        }
+
     }
 }

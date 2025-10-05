@@ -46,6 +46,12 @@ public class Map
     public List<Rectangle> ZombieSpawnZones { get => _zombieSpawnZones; }
 
 
+    public Vector2 DefaultMapPosition = Vector2.Zero;
+
+    public List<MapZone> Zones;
+    public MapZone CurrentPlayerZone;
+
+
 
     public Map(Rectangle rect, string src, string name, MapScene scene, float zoom = 1f, bool debug = false)
     {
@@ -57,6 +63,9 @@ public class Map
         Scene = scene;
         Loaded = false;
         _zombieSpawnZones = [];
+
+        Zones = [];
+        CurrentPlayerZone = null;
     }
 
     public void InitPosition(int x, int y)
@@ -145,6 +154,26 @@ public class Map
             }
         }
 
+        var defaultX = int.Parse(_map.Properties["defaultposX"]);
+        var defaultY = int.Parse(_map.Properties["defaultposY"]);
+        DefaultMapPosition = new Vector2(defaultX, defaultY);
+
+
+        var zonesLayer = GetLayer<TiledMapObjectLayer>("Zones");
+        if (zonesLayer != null)
+        {
+            foreach (var zone in zonesLayer.Objects)
+            {
+                Zones.Add(
+                    new MapZone(
+                        rect: new Rectangle(zone.Position.ToPoint(), new Vector2(zone.Size.Width, zone.Size.Height).ToPoint()),
+                        name: zone.Properties["name"]
+                    )
+                );
+            }
+        }
+
+
         Loaded = true;
     }
 
@@ -163,6 +192,17 @@ public class Map
         if (InputManager.IsPressed(Keys.M))
         {
             ToggleDebug();
+        }
+
+        var player = EntityManager.Player;
+        if (CurrentPlayerZone != null && !CurrentPlayerZone.EntityIn(player)) CurrentPlayerZone = null; // Si le player sors de la currentzone, currentzone = null
+        foreach (var zone in Zones)
+        {
+            if (zone.EntityIn(player) && CurrentPlayerZone != zone)
+            {
+                CurrentPlayerZone = zone;
+                NotificationManager.Add($"<{CurrentPlayerZone.Name}>", font: CFonts.Minecraft_24);
+            }
         }
     }
 

@@ -39,10 +39,11 @@ public class BarrelEntity : AnimatedEntity, IDamageable
         // ((GameScene)SceneManager.GetScene(SceneState.Game))._entities.Add(explosion);
         EntityManager.AddEntity(explosion);
         Camera2D.Shake(0.5f, 10f);
-        KillMe = true;
+        Kill();
     }
 
 
+    
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);

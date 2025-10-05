@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled;
 
-public class MachineGun(Rectangle rect, string name, Map map, IWeaponUser owner, int dx = 1, bool dropped = true, bool debug = false) : Weapon(rect, "", name, map, owner, dx, dropped, debug)
+public class MachineGun(Rectangle rect, string name, Map map, IWeaponUser owner, int dx = 1, bool dropped = true, bool infiniteAmmo = false, bool debug = false) : Weapon(rect, "", name, map, owner, dx, dropped, infiniteAmmo: infiniteAmmo, debug)
 {
-    public MachineGun() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()), name:"Machine gun", map: null, owner: null, dx:1, dropped:true, debug:false)
+    public MachineGun() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()), name:"Machine gun", map: null, owner: null, dx:1, dropped:true, infiniteAmmo: false, debug:false)
     {
 
     }

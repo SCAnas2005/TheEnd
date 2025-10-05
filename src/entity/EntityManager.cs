@@ -47,22 +47,40 @@ public static class EntityManager
 
     public static Entity RemoveEntity(Entity entity)
     {
+        entity.Kill();
         _entities.Remove(entity);
         return entity;
     }
 
     public static void RemoveAll()
     {
+        foreach (var e in _entities)
+        {
+            e.Kill();
+        }
         _entities.Clear();
     }
 
-    public static void RemoveAllExcept(List<Type> t=null)
+    public static void RemoveAllExcept(List<Type> t = null)
     {
         if (t == null || t.Count == 0)
         {
             RemoveAll(); return;
         }
-        Entities.RemoveAll(e => !t.Contains(e.GetType()));
+        var toRemove = Entities.Where(e => !t.Contains(e.GetType())).ToList();
+        foreach (var e in toRemove)
+        {
+            RemoveEntity(e);
+        }
+    }
+
+    public static void RemoveWhere(Func<Entity, bool> predicate)
+    {
+        var l = _entities.Where(predicate).ToList();
+        foreach (var e in l)
+        {
+            RemoveEntity(e);
+        }
     }
 
 
@@ -166,7 +184,7 @@ public static class EntityManager
                     itemInInteraction = true; // stop l'update des entités si un item est en interaction
             }
             // Zombies
-            else if (ent is Zombies zombie)
+            else if (ent is Zombie zombie)
             {
                 if (zombie.Map.Scene == currentMap.Scene)
                     zombie.Update(gameTime);

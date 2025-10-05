@@ -8,11 +8,11 @@ public class SearchObject : InteractionObject
     public Item ItemToGive;
     public SearchObject(
         Rectangle rect,
-        MapScene mapScene,
+        Map map,
         string name = "searchbox",
         Item itemToGive = null,
         Func<string> actionName = null,
-        Func<string> actionInstructions = null, Keys key = Keys.E) : base(rect, type:"searchbox", mapScene, name, l:null, c:null, actionName, actionInstructions, key)
+        Func<string> actionInstructions = null, Keys key = Keys.E) : base(rect, type:"searchbox", map, name, l:null, c:null, actionName, actionInstructions, key)
     {
         ItemToGive = itemToGive;
         EditAction(

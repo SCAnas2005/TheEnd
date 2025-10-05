@@ -15,7 +15,7 @@ public enum ZombieState
     Sleep
 }
 
-public class Zombies : Sprite, IDamageable, IHittable
+public class Zombie : Sprite, IDamageable, IHittable
 {
     public (int, int) t;
 
@@ -42,7 +42,7 @@ public class Zombies : Sprite, IDamageable, IHittable
     private float _nextSoundCooldown = 6000f;
     private float _soundTimer = 0f;
 
-    public Zombies(Rectangle rect, string src, float speed, int health, Map map, bool debug = false) : base(rect, src, speed, health, map: map, debug: debug)
+    public Zombie(Rectangle rect, string src, float speed, int health, Map map, bool debug = false) : base(rect, src, speed, health, map: map, debug: debug)
     {
         _speed = speed;
 
@@ -59,7 +59,7 @@ public class Zombies : Sprite, IDamageable, IHittable
         _sounds = [];
     }
 
-    public Zombies() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()), src: "", speed: 2f, health: 50, map: null, debug: false)
+    public Zombie() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()), src: "", speed: 2f, health: 50, map: null, debug: false)
     {
         
     }
@@ -86,8 +86,11 @@ public class Zombies : Sprite, IDamageable, IHittable
         for (int i = 0; i < 24; i++)
         {
             var s = $"sounds/sprites/zombies/walk-sounds/zombie-{i + 1}";
-            var a = new AudioStreamPlayer2D(name: s, sound: Content.Load<SoundEffect>(s).CreateInstance(), entity: this);
-            a.MaxDistance = _attackZone.Width;
+            var a = new AudioStreamPlayer2D(name: s, sound: Content.Load<SoundEffect>(s).CreateInstance(), entity: this)
+            {
+                MaxDistance = _attackZone.Width*5
+            };
+            a.SetListener(EntityManager.Player);
             _sounds["walk"].Add(a);
         }
     }   
@@ -261,7 +264,7 @@ public class Zombies : Sprite, IDamageable, IHittable
             player.ZombieKilled++;
             _isDead = true;
         }
-        List<Sprite> spritesToAttack = EntityManager.GetEntitiesWhere<Sprite>(e => e is Sprite s && s is not Zombies);
+        List<Sprite> spritesToAttack = EntityManager.GetEntitiesWhere<Sprite>(e => e is Sprite s && s is not Zombie);
 
         foreach (var sprite in spritesToAttack)
         {

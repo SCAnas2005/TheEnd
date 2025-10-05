@@ -55,4 +55,14 @@ public class SecondQuest : Quest
         player.AddMoney(5);
         NotificationManager.Add($"Quest completed", CFonts.Minecraft_24);
     }
+
+    public override void OnFailed(Player player)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void ShouldFailed(Player player)
+    {
+        throw new System.NotImplementedException();
+    }
 }

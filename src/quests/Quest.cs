@@ -28,5 +28,7 @@ public abstract class Quest
     public abstract bool ShouldStart(Player player);
     public abstract void Start(Player player);
     public abstract void Update(Player player);
+    public abstract void OnFailed(Player player);
+    public abstract void ShouldFailed(Player player);
     public abstract void Complete(Player player);
 }

@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -149,7 +150,8 @@ public class AdminPanel : StatefulWidget
                                 size: new Size(300, 30),
                                 text: new TextWidget($"{type.Name}"),
                                 backgroundColor: new Color(0,0,0,50),
-                                OnClick: () => { EntityManager.RemoveEntity(_selectedEntity);
+                                OnClick: () => {
+                                    //EntityManager.RemoveEntity(_selectedEntity);
                                     _selectedEntity = null;
                                     entityToAdd = type;
                                     _state = AdminPanelState.PlaceEntityWithMouse;
@@ -232,20 +234,40 @@ public class AdminPanel : StatefulWidget
         );
 
         List<Widget> _mapButtonsWidgets = [];
-        foreach (var (mapscene, map) in ((GameScene)SceneManager.GetScene(SceneState.Game)).Maps)
+        var gameScene =  (GameScene)SceneManager.GetScene(SceneState.Game);
+        var actualScene = gameScene.CurrentMap;
+        foreach (var (mapscene, map) in gameScene.Maps)
         {
+            var localScene = mapscene;
+            var localMap = map;
+
             _mapButtonsWidgets.Add(
                 new TextButtonWidget(
-                    size: new Size(150,30),
-                    text: new TextWidget($"{mapscene}"),
+                    size: new Size(150, 30),
+                    text: new TextWidget(
+                        $"{localScene}",
+                        color: actualScene.Scene == localScene ? Color.Blue : Color.White
+                    ),
                     backgroundColor: Color.LightGray,
                     OnClick: () =>
                     {
-                        Console.WriteLine($"map : {mapscene}");
+                        if (!localMap.Loaded)
+                        {
+                            gameScene.LoadMap(localScene);
+                        }
+                        var defaultPos = localMap.DefaultMapPosition;
+
+                        gameScene.ChangeMapScene(
+                            scene: localScene,
+                            newPlayerPos: defaultPos * localMap.TileSize.ToVector2()
+                        );
+
+                        SetState();
                     }
                 )
             );
         }
+
 
         _mapsContainer = new ContainerWidget(
             rect: new Rectangle((_controlContainer.Position + new Vector2(_controlContainer.Size.Width + 50, 50)).ToPoint(), new Size(150, 300).ToPoint()),
@@ -263,7 +285,25 @@ public class AdminPanel : StatefulWidget
                     widgets: [
                         .. _mapButtonsWidgets,
                         new SizedBox(height: 50),
-                        new TextButtonWidget(size: new Size(150,20), text: new TextWidget("Reinit"), backgroundColor: Color.SlateGray)
+                        new TextWidget("System"),
+                        new TextButtonWidget(
+                            size: new Size(150,20),
+                            text: new TextWidget("Reinit map"),
+                            backgroundColor: Color.SlateGray,
+                            OnClick: () => {
+                                gameScene.ReinitMapScene(actualScene.Scene);
+                                SetState();
+                            }
+                        ),
+                        new TextButtonWidget(
+                            size: new Size(150,20),
+                            text: new TextWidget("Reinit all"),
+                            backgroundColor: Color.SlateGray,
+                            OnClick: () => {
+                                gameScene.ReInit();
+                                SetState();
+                            }
+                        ),
                     ]
                 ),
             ]
@@ -376,10 +416,10 @@ public class AdminPanel : StatefulWidget
             e = NpcManager.CreateBasicFromType(t, position, map);
             NpcManager.AddNpc((Npc)e);
         }
-        else if (typeof(Zombies).IsAssignableFrom(t))
+        else if (typeof(Zombie).IsAssignableFrom(t))
         {
             e = ZombieManager.CreateBasicFromType(t, position, map);
-            ZombieManager.AddZombie((Zombies)e);
+            ZombieManager.AddZombie((Zombie)e);
         }
         else
         {

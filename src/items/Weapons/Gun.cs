@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled;
 
-public class Gun(Rectangle rect, string name, Map map, IWeaponUser owner, int dx = 1, bool dropped = true, bool debug = false) : Weapon(rect, "Weapons/Guns/gun", name, map, owner, dx, dropped, debug)
+public class Gun(Rectangle rect, string name, Map map, IWeaponUser owner, int dx = 1, bool dropped = true, bool infiniteAmmo = false, bool debug = false) : Weapon(rect, "Weapons/Guns/gun", name, map, owner, dx, dropped, infiniteAmmo: infiniteAmmo, debug)
 {
-    public Gun() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()), name:"Gun", map: null, owner: null, dx:1, dropped:true, debug:false)
+    public Gun() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()), name:"Gun", map: null, owner: null, dx:1, dropped:true, infiniteAmmo: false, debug:false)
     {
 
     }
@@ -31,7 +31,7 @@ public class Gun(Rectangle rect, string name, Map map, IWeaponUser owner, int dx
 
     public override void Shoot()
     {
-        if (Ammo > 0)
+        if (InfiniteAmmo || (Ammo > 0))
         {
             IsShooting = true;
             // Vector2 mousePos = Vector2.Transform(Mouse.GetState().Position.ToVector2(), Matrix.Invert(Camera2D.GetViewMatrix()));
@@ -41,7 +41,7 @@ public class Gun(Rectangle rect, string name, Map map, IWeaponUser owner, int dx
                 d: _direction,
                 speed: 25
             ));
-            Ammo--;
+            if (Ammo > 0 && !InfiniteAmmo) Ammo--;
             AudioManager.Play(_shotSound, volume: 0.5f);
         }
     }

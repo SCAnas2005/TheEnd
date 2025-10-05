@@ -5,12 +5,12 @@ using MonoGame.Extended;
 
 public class FirstQuest : Quest
 {
-    Zombies z = null;
+    Zombie z = null;
     private TimerHandle _waitHandle = null;
     private bool _cinematicStarted = false;
     private bool _cameraTrackingZombie = false;
 
-    public FirstQuest(Player player) : base("First quest", "Kill a zombie") { }
+    public FirstQuest() : base("First quest", "Kill a zombie") { }
 
     public override bool ShouldStart(Player player)
     {
@@ -69,7 +69,7 @@ public class FirstQuest : Quest
     public void CreateMainZombie(Player player)
     {
         (int, int) pos = (20, 20);
-        z = new Zombies(
+        z = new Zombie(
             rect: new Rectangle(pos.Item1 * player.Map.TileSize.Width, pos.Item2 * player.Map.TileSize.Height, player.Map.TileSize.Width - 3, player.Map.TileSize.Width - 3),
             src: "",
             speed: 2,
@@ -106,5 +106,15 @@ public class FirstQuest : Quest
         IsCompleted = true;
         player.AddMoney(10);
         NotificationManager.Add($"Quest completed", CFonts.Minecraft_24);
+    }
+
+    public override void OnFailed(Player player)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void ShouldFailed(Player player)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -26,15 +26,13 @@ public class GameScene : Scene {
     private InventoryWidget _inventoryWidget;
     private UserInfoWidget _userInfo;
 
-    private (int, int) playerPos;
-
     private Dictionary<MapScene, Map> _maps;
     public Dictionary<MapScene, Map> Maps { get => _maps; }
-    private Dictionary<MapScene, bool> _itemsCreated = new();
-    private Dictionary<MapScene, bool> _entitiesCreated = new();
+    private Dictionary<MapScene, bool> _itemsCreated;
+    private Dictionary<MapScene, bool> _entitiesCreated;
     private MapScene _mapScene;
 
-    private Map CurrentMap {get {return _maps[_mapScene];}}
+    public Map CurrentMap {get {return _maps[_mapScene];}}
 
     // public Dictionary<MapScene, List<InteractionObject>> InteractionObjects;
 
@@ -48,7 +46,7 @@ public class GameScene : Scene {
     {
         _maps = [];
         _itemsCreated = [];
-        playerPos = (10, 10);
+        _entitiesCreated = [];
 
 
         _InfoRect = new Rectangle(_rect.X, _rect.Height - 200, _rect.Width, 200);
@@ -63,55 +61,86 @@ public class GameScene : Scene {
     {
         _maps = [];
         _itemsCreated = [];
-        playerPos = (10, 10);
+        _entitiesCreated = [];
         _InfoRect = new Rectangle(_rect.X, _rect.Height - 200, _rect.Width, 200);
         _InfoRectRight = new Rectangle(_rect.Width - 400, _rect.Y, 400, _rect.Height);
         InteractionObjectsManager.Init();
 
+        EntityManager.RemoveAllExcept([typeof(Player)]);
         CreateAllMaps();
         Load(Globals.Content);
     }
 
-    public void CreateAllMaps()
+    public void ReinitMapScene(MapScene scene)
     {
-        MapScene i = MapScene.City1;
-        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/map", name: "City1", scene: i, zoom: 4.5f, debug: false);
-        _itemsCreated[i] = false;
-        _entitiesCreated[i] = false;
-        i = MapScene.Home;
-        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/home_map", name: "Home", scene: i, zoom: 1.3f, debug: false);
-        _itemsCreated[i] = false;
-        _entitiesCreated[i] = false;
-        i = MapScene.Grange1;
-        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/grange_inside", name: "Grange1", scene: i, zoom: 1.3f, debug: false);
-        _itemsCreated[i] = false;
-        _entitiesCreated[i] = false;
-        i = MapScene.Labo;
-        _maps[i] = new Map(rect: Rectangle.Empty, src: "Maps/lab", name: "Labo", scene: i, zoom: 4.5f, debug: false);
-        _itemsCreated[i] = false;
-        _entitiesCreated[i] = false;
-
-        _mapScene = MapScene.Labo;
+        EntityManager.RemoveWhere((e) => e.Map.Scene == scene && !(e is Player));
+        CreateMapScene(scene);
+        LoadMap(scene);
     }
 
+
+    public void CreateAllMaps()
+    {
+        foreach (var scene in Enum.GetValues<MapScene>())
+        {
+            CreateMapScene(scene);
+        }
+        _mapScene = MapScene.City1;
+    }
+
+    public void CreateMapScene(MapScene scene)
+    {
+        switch (scene)
+        {   
+            case MapScene.City1:
+                _maps[scene] = new Map(rect: Rectangle.Empty, src: "Maps/map", name: "City1", scene: scene, zoom: 4.5f, debug: false);
+                _itemsCreated[scene] = false;
+                _entitiesCreated[scene] = false;
+                break;
+            
+            case MapScene.Home:
+                _maps[scene] = new Map(rect: Rectangle.Empty, src: "Maps/home_map", name: "Home", scene: scene, zoom: 1.3f, debug: false);
+                _itemsCreated[scene] = false;
+                _entitiesCreated[scene] = false;
+                break;
+
+            case MapScene.Grange1:
+                _maps[scene] = new Map(rect: Rectangle.Empty, src: "Maps/grange_inside", name: "Grange1", scene: scene, zoom: 1.3f, debug: false);
+                _itemsCreated[scene] = false;
+                _entitiesCreated[scene] = false;
+                break;
+
+            case MapScene.Labo:
+                _maps[scene] = new Map(rect: Rectangle.Empty, src: "Maps/lab", name: "Labo", scene: scene, zoom: 4.5f, debug: false);
+                _itemsCreated[scene] = false;
+                _entitiesCreated[scene] = false;
+                break;
+            default:
+            break;
+        }
+    }
+
+    public void LoadMap(MapScene scene)
+    {
+        _maps[scene].Load(Globals.Content);
+        if (!_itemsCreated[scene])
+            CreateItemsForScene(scene);
+        if (!_entitiesCreated[scene])
+            CreateEntitiesForScene(scene);
+        CreateInteractionsForMapScene(scene);
+    }
 
     public void ChangeMapScene(MapScene scene, Vector2? newPlayerPos = null)
     {
         _mapScene = scene;
         if (!_maps[_mapScene].Loaded)
         {
-            _maps[_mapScene].Load(Globals.Content);
-            if (!_itemsCreated[_mapScene])
-                CreateItemsForScene(_mapScene);
-            if (!_entitiesCreated[_mapScene])
-                CreateEntitiesForScene(_mapScene);
-            CreateInteractionsForMapScene(_mapScene);
+            LoadMap(_mapScene);
         }
         if (newPlayerPos != null)
             _player.Position = newPlayerPos.Value;
         _player.SetNewMap(CurrentMap);
         Camera2D.Init(Globals.Graphics.GraphicsDevice.Viewport, CurrentMap);
-
     }
 
 
@@ -151,6 +180,7 @@ public class GameScene : Scene {
                 map: _maps[scene]
             );
 
+            fog.Load(Globals.Content);
             EntityManager.AddEntity(fog);
 
             _entitiesCreated[scene] = true;
@@ -163,8 +193,8 @@ public class GameScene : Scene {
         {
             Npc e = new(
                 rect: new Rectangle(
-                    x: (playerPos.Item2 + 5) * _maps[scene].TileSize.Width,
-                    y: (playerPos.Item1 + 5) * _maps[scene].TileSize.Height,
+                    x: ((int)CurrentMap.DefaultMapPosition.X + 5) * _maps[scene].TileSize.Width,
+                    y: ((int)CurrentMap.DefaultMapPosition.Y + 5) * _maps[scene].TileSize.Height,
                     width: Sprite.GetSpriteSize(_maps[scene]).Width,
                     height: Sprite.GetSpriteSize(_maps[scene]).Height
                 ),
@@ -200,7 +230,8 @@ public class GameScene : Scene {
         if (InteractionObjectsManager.HasScene(scene)) return;
         // if (InteractionObjects.ContainsKey(scene)) { return; }
         // InteractionObjects[scene] = [];
-        var interactions = CurrentMap.GetAllInteractions();
+        Console.WriteLine("Creating intereactions object for scene : " + scene + ", current map : " + CurrentMap.Scene);
+        var interactions = _maps[scene].GetAllInteractions();
         if (interactions == null) return;
         foreach (var obj in interactions.Objects)
         {
@@ -210,7 +241,7 @@ public class GameScene : Scene {
                 i = new TransitionDoorObject(
                     rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
                     type: obj.Properties["type"],
-                    mapScene: scene,
+                    map: _maps[scene],
                     name: obj.Name,
                     l: obj.Properties.TryGetValue("destinationL", out var lStr) && int.TryParse(lStr, out var lVal) ? lVal : null,
                     c: obj.Properties.TryGetValue("destinationC", out var cStr) && int.TryParse(cStr, out var cVal) ? cVal : null,
@@ -223,7 +254,7 @@ public class GameScene : Scene {
                 i = new TransitionDoorObject(
                     rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
                     type: obj.Properties["type"],
-                    mapScene: MapScene.Home,
+                    map: _maps[MapScene.Home],
                     name: obj.Name,
                     l: obj.Properties.TryGetValue("destinationL", out var lStr) && int.TryParse(lStr, out var lVal) ? lVal : null,
                     c: obj.Properties.TryGetValue("destinationC", out var cStr) && int.TryParse(cStr, out var cVal) ? cVal : null,
@@ -238,7 +269,7 @@ public class GameScene : Scene {
                 i = new NormalDoorObject(
                     rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
                     type: obj.Properties["type"],
-                    mapScene: MapScene.Home,
+                    map: _maps[MapScene.Home],
                     name: obj.Name,
                     l: int.Parse(obj.Properties["posL"]),
                     c: int.Parse(obj.Properties["posC"]),
@@ -252,7 +283,7 @@ public class GameScene : Scene {
                 i = new ReadablePaperObject(
                     rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
                     type: obj.Properties["type"],
-                    mapScene: MapScene.Home,
+                    map: _maps[MapScene.Home],
                     name: obj.Name,
                     l: int.Parse(obj.Properties["posL"]),
                     c: int.Parse(obj.Properties["posC"]),
@@ -266,7 +297,7 @@ public class GameScene : Scene {
                 i = new ArmoireObject(
                     rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
                     type: obj.Properties["type"],
-                    mapScene: MapScene.Home,
+                    map: _maps[MapScene.Home],
                     name: obj.Name,
                     l: int.Parse(obj.Properties["posL"]),
                     c: int.Parse(obj.Properties["posC"]),
@@ -279,7 +310,7 @@ public class GameScene : Scene {
                 i = new ArmoireObject(
                     rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
                     type: obj.Properties["type"],
-                    mapScene: MapScene.Home,
+                    map: _maps[MapScene.Home],
                     name: obj.Name,
                     l: int.Parse(obj.Properties["posL"]),
                     c: int.Parse(obj.Properties["posC"]),
@@ -292,7 +323,7 @@ public class GameScene : Scene {
                 i = new ArmoireObject(
                     rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
                     type: obj.Properties["type"],
-                    mapScene: MapScene.Home,
+                    map: _maps[MapScene.Home],
                     name: obj.Name,
                     l: int.Parse(obj.Properties["posL"]),
                     c: int.Parse(obj.Properties["posC"]),
@@ -304,7 +335,7 @@ public class GameScene : Scene {
             {
                 i = new SearchObject(
                     rect: new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height),
-                    mapScene: scene,
+                    map: _maps[scene],
                     itemToGive: null
                 );
             } 
@@ -315,7 +346,7 @@ public class GameScene : Scene {
                 ItemManager.AddAndLoad(item);
                 i = new SearchObject(
                     rect: rect,
-                    mapScene: scene,
+                    map: _maps[scene],
                     itemToGive: item
                 );
             } 
@@ -397,7 +428,7 @@ public class GameScene : Scene {
 
         if (scene == MapScene.Home)
         {
-            i = new MachineGun(
+            i = new Gun(
                 rect: new Rectangle(
                     x: (int)Map.GetPosFromMap((5, 20), CurrentMap.TileSize).X,
                     y: (int)Map.GetPosFromMap((5, 20), CurrentMap.TileSize).Y,
@@ -407,7 +438,8 @@ public class GameScene : Scene {
                 name: "First gun",
                 map: _maps[scene],
                 owner: null,
-                dropped: true
+                dropped: true,
+                infiniteAmmo: true
             );
             i.Load(Globals.Content);
             ItemManager.AddItem(i);
@@ -439,7 +471,8 @@ public class GameScene : Scene {
                 rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()),
                 name: "test",
                 map: CurrentMap,
-                owner: _player
+                owner: _player,
+                infiniteAmmo: true
             );
             i.IsDropped = false;
             _player.Inventory.AddItem(i);
@@ -494,8 +527,8 @@ public class GameScene : Scene {
         Console.WriteLine($"Map is loaded: {CurrentMap.Loaded}");
         _player = new Player(
             rect: new Rectangle(
-                playerPos.Item2 * CurrentMap.TileSize.Width,
-                playerPos.Item1 * CurrentMap.TileSize.Height,
+                (int)CurrentMap.DefaultMapPosition.X * CurrentMap.TileSize.Width,
+                (int)CurrentMap.DefaultMapPosition.Y * CurrentMap.TileSize.Height,
                 Sprite.GetSpriteSize(CurrentMap).Width,
                 Sprite.GetSpriteSize(CurrentMap).Height
             ),
@@ -514,7 +547,7 @@ public class GameScene : Scene {
         for (int i = 0; i < 5; i++)
         {
             var randomPos = pos[Utils.Random.Next(0, pos.Count)];
-            var zombie = new Zombies(
+            var zombie = new Zombie(
                 rect: new Rectangle(
                     randomPos.Item2 * CurrentMap.TileSize.Width,
                     randomPos.Item1 * CurrentMap.TileSize.Height,
@@ -657,11 +690,6 @@ public class GameScene : Scene {
                 npc.MovePath = path;
                 PathDrawer.AddPath(path);
             }
-        }
-
-        if (InputManager.IsPressed(Keys.Space))
-        {
-            ZombieManager.SpawnZombiesGroup(10, _player.Position);
         }
 
         AdminPanel.Instance.Update(gameTime);

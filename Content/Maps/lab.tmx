@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="128" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <properties>
+  <property name="defaultposX" value="3"/>
+  <property name="defaultposY" value="15"/>
+ </properties>
  <tileset firstgid="1" source="tileset_map.tsx"/>
  <layer id="1" name="ground" width="128" height="64">
   <data encoding="csv">

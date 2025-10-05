@@ -93,9 +93,20 @@ public class ThirdQuest : Quest
         Status = QuestStatus.Completed;
         marc.RemoveAction("give");
         player.AddMoney(50);
+        NotificationManager.Add(text: "Vous avez gagne 50$", font: CFonts.Minecraft_24);
         marc.Dialogs = [
             new DialogLine(marc.Name, "Je te remercie encore!", marc.ProfilePicture)
         ];
         NotificationManager.Add($"Quest completed", CFonts.Minecraft_24);
+    }
+
+    public override void OnFailed(Player player)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void ShouldFailed(Player player)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -7,8 +7,8 @@ using Microsoft.Xna.Framework;
 
 public static class ZombieManager
 {
-    private static List<Zombies> _zombies => [.. EntityManager.Entities.OfType<Zombies>()];
-    public static List<Zombies> Zombies => _zombies;
+    private static List<Zombie> _zombies => [.. EntityManager.Entities.OfType<Zombie>()];
+    public static List<Zombie> Zombies => _zombies;
     public static int Count => Zombies.Count;
 
     private static double _lastSpawnTime = 0;
@@ -17,17 +17,17 @@ public static class ZombieManager
     private static double _cooldown = MIN_SPAWN_COOLDOWN;
 
 
-    public static void AddZombie<T>(T zombie) where T : Zombies
+    public static void AddZombie<T>(T zombie) where T : Zombie
     {
         EntityManager.AddEntity(zombie);
     }
 
-    public static void RemoveNpc<T>(T zombie) where T : Zombies
+    public static void RemoveNpc<T>(T zombie) where T : Zombie
     {
         EntityManager.RemoveEntity(zombie);
     }
 
-    public static Zombies CreateBasicZombie(Vector2 position, Map map)
+    public static Zombie CreateBasicZombie(Vector2 position, Map map)
     {
         var zombieRect = new Rectangle(
             (int)position.X,
@@ -35,7 +35,7 @@ public static class ZombieManager
             Sprite.GetSpriteSize(map).Width,
             Sprite.GetSpriteSize(map).Height
         );
-        var zombie = new Zombies(
+        var zombie = new Zombie(
             rect: zombieRect,
             src: "",
             speed: 2,
@@ -49,7 +49,7 @@ public static class ZombieManager
         return zombie;
     }
 
-    public static T CreateBasic<T>(Vector2 position, Map map) where T : Zombies, new()
+    public static T CreateBasic<T>(Vector2 position, Map map) where T : Zombie, new()
     {
         T z = new()
         {
@@ -60,12 +60,12 @@ public static class ZombieManager
         return z;
     }
 
-    public static Zombies CreateBasicFromType(Type t, Vector2 position, Map map)
+    public static Zombie CreateBasicFromType(Type t, Vector2 position, Map map)
     {
-        if (typeof(Zombies).IsAssignableFrom(t))
+        if (typeof(Zombie).IsAssignableFrom(t))
         {
             // Crée dynamiquement une instance du type concret choisi
-            var z = (Zombies)Activator.CreateInstance(t);
+            var z = (Zombie)Activator.CreateInstance(t);
             z.Position = position;
             z.Map = map;
             z.Load(Globals.Content);
@@ -76,7 +76,7 @@ public static class ZombieManager
         return null;
     }
 
-    public static Zombies SpawnBasicZombieNearPlayer()
+    public static Zombie SpawnBasicZombieNearPlayer()
     {
         var map = EntityManager.Player.Map;
 
@@ -105,17 +105,17 @@ public static class ZombieManager
         return [.. _zombies.OfType<T>()];
     }
 
-    public static List<Zombies> GetEntitiesOfType<T>() where T : class
+    public static List<Zombie> GetEntitiesOfType<T>() where T : class
     {
         return [.. _zombies.Where(e => e is T)];
     }
 
-    public static List<Zombies> GetEntitiesWhere(Func<Zombies, bool> predicate)
+    public static List<Zombie> GetEntitiesWhere(Func<Zombie, bool> predicate)
     {
         return [.. _zombies.Where(predicate)];
     }
 
-    public static Zombies GetFirst(Func<Zombies, bool> predicate)
+    public static Zombie GetFirst(Func<Zombie, bool> predicate)
     {
         return _zombies.FirstOrDefault(predicate);
     }

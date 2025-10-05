@@ -184,11 +184,17 @@ public class Inventory
     }
 
     public void UpdateSelectedItem(GameTime gameTime)
-    {   
-        if (SelectedItemIndex >= 0 && SelectedItemIndex <= Storage-1)
+    {
+        if (SelectedItemIndex >= 0 && SelectedItemIndex <= Storage - 1)
         {
             if (SelectedItem != null && !SelectedItem.KillMe)
                 SelectedItem?.Update(gameTime);
+
+        }
+
+        for (int i = 0; i < Items.Length; i++)
+        {
+            if (Items[i] != null && Items[i].KillMe) Items[i] = null;
         }
     }
 

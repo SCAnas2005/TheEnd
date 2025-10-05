@@ -13,6 +13,9 @@ public class AudioStreamPlayer
     public bool Loop { get => _instance != null ? _instance.IsLooped : false; set { if (Instance != null) _instance.IsLooped = value; } }
 
 
+    private bool _destroy = false;
+    public bool Destroyed { get => _destroy; }
+
     public AudioStreamPlayer()
     {
         AudioStreamPlayerManager.Add(this);
@@ -38,6 +41,11 @@ public class AudioStreamPlayer
         Instance = s.CreateInstance();
     }
 
+    public virtual void Update()
+    {
+        
+    }
+
 
     public virtual void Play()
     {
@@ -52,5 +60,15 @@ public class AudioStreamPlayer
     public virtual void Stop()
     {
         AudioStreamPlayerManager.Stop(this);
+    }
+
+    public virtual void Destroy()
+    {
+        _destroy = true;
+        if (Instance == null) return;
+        if (_instance.State == SoundState.Playing || _instance.State == SoundState.Paused)
+            _instance.Stop();
+        _instance.Dispose();
+        _instance = null;
     }
 }

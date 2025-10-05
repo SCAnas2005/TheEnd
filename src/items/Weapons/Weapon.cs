@@ -21,15 +21,18 @@ public abstract class Weapon : Item
 
     public int Ammo { get; protected set; } = 10;
     public bool IsShooting { get; protected set; }
+
+    public bool InfiniteAmmo = false;
     public IWeaponUser Owner { get; protected set; }
 
     public Weapon(Rectangle rect, string src, string name, Map map, IWeaponUser owner,
-                  int dx = 1, bool dropped = true, bool debug = false)
+                  int dx = 1, bool dropped = true, bool infiniteAmmo = false, bool debug = false)
         : base(rect, src, name, map, dropped, debug)
     {
         _direction = new Vector2(dx, 0);
         Owner = owner;
         IsDropped = dropped;
+        InfiniteAmmo = infiniteAmmo;
     }
 
     public override void Load(ContentManager Content)

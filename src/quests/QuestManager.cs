@@ -24,7 +24,7 @@ public static class QuestManager
 
     public static void CreateAllQuests(Player player)
     {
-        Quests[QuestName.FirstQuest] = new FirstQuest(player);
+        Quests[QuestName.FirstQuest] = new FirstQuest();
         Quests[QuestName.SecondQuest] = new SecondQuest();
         Quests[QuestName.ThirdQuest] = new ThirdQuest();
     }
