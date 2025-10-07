@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -23,14 +22,16 @@ public class Inventory
     public int SelectedItemIndex;
 
     private AudioStreamPlayer itemEquip;
+    public IItemUser Owner;
 
 
-    public Inventory(int storageMax, Item[] items = null)
+    public Inventory(int storageMax, IItemUser owner, Item[] items = null)
     {
         Storage = storageMax;
         Items = items ?? new Item[Storage];
         ItemNumber = 0;
         SelectedItemIndex = 0;
+        Owner = owner;
 
         itemEquip = new AudioStreamPlayer("item_equip", "sounds/items/item-equip");
     }
@@ -137,7 +138,7 @@ public class Inventory
                         var weapon = GetFirst<Weapon>();
                         if (weapon != null) weapon.AddAmmo(ammo.Ammo);
                     }
-                    newItem.OnPickUp();
+                    newItem.OnPickUp(Owner);
                     Items[i] = newItem;
                     if (i == SelectedItemIndex)
                     {

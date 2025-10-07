@@ -177,7 +177,7 @@ public abstract class Item : Entity
         }
     }
 
-    public virtual void OnPickUp()
+    public virtual void OnPickUp(IItemUser user)
     {
         IsDropped = false;
         AudioManager.Play(_onPickUpSound); 

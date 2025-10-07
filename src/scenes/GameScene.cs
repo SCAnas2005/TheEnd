@@ -342,7 +342,17 @@ public class GameScene : Scene {
             if (obj.Properties["type"] == "searchbox" && obj.Name == "deadman_grange")
             {
                 Rectangle rect = new Rectangle(_rect.X + (int)obj.Position.X, _rect.Y + (int)obj.Position.Y, (int)obj.Size.Width, (int)obj.Size.Height);
-                var item = new AppleItem(rect: rect, name: "", map: _maps[scene], dropped: false, debug: true);
+                var item = new BookItem(
+                    rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(8).ToPoint()),
+                    dropped: false,
+                    src: "items/logbook",
+                    name: "Logbook",
+                    map: CurrentMap
+                )
+                {
+                    IsDropped = false,
+                    Content = BookStruct.LoadFromJson("data/logbook1.json")
+                };
                 ItemManager.AddAndLoad(item);
                 i = new SearchObject(
                     rect: rect,
@@ -423,9 +433,6 @@ public class GameScene : Scene {
             ItemManager.AddItem(i);
         }
         
-
-
-
         if (scene == MapScene.Home)
         {
             i = new Gun(
@@ -478,37 +485,6 @@ public class GameScene : Scene {
             _player.Inventory.AddItem(i);
             ItemManager.AddAndLoad(i);
 
-
-            i = new BookItem(
-                rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(8).ToPoint()),
-                src: "items/logbook",
-                name: "Logbook",
-                map: CurrentMap
-            )
-            {
-                IsDropped = false,
-                Content = new BookStruct(3),
-            };
-
-            var book = ((BookItem)i).Content;
-            var page = book.GetPage(1);
-            page.Title = "My First title";
-            page.Content = "Content of the body, ecqfsjdmlfjq\nfdjsklfmjsqdlfjsqd\nfdsmqljfslqdjfmlsdqkfjmlsdqkfjmlsqdfksqd\nsdmlfkjsdq lfksdq jmflksdjf mlsqdkjf sdlqmfjsdq mlfkjsdmlfk sqdjmflksdq fj";
-            page.Foot = "foot here";
-
-            var page2 = book.GetPage(2);
-            page2.Title = "Cristiano ronaldo siuu";
-            page2.Content = "Siuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu";
-            page2.Foot = "test";
-
-
-            var page3 = book.GetPage(3);
-            page3.Title = "fdlkqjfmlkdsjfmlksqj ffsq";
-            page3.Content = "fdsmlkqfjsmqdkljfsmlqdkfjsmlqdk fjsdmqkl fjsq";
-            page3.Foot = "fdsqlkjfsdlkfjs";
-
-            _player.Inventory.AddItem(i);
-            ItemManager.AddAndLoad(i);
         }
 
 
@@ -593,6 +569,11 @@ public class GameScene : Scene {
 
         AdminPanel.Instance = new AdminPanel();
         AdminPanel.Instance.Load(Content);
+    }
+
+    public void TeleportPlayer(Vector2 newPosition)
+    {
+        _player.Position = newPosition;
     }
 
     public override void Update(GameTime gameTime)
@@ -700,6 +681,14 @@ public class GameScene : Scene {
                 AdminPanel.Instance.Show = true;
             }
         }
+
+        if (InputManager.IsHolding(Keys.LeftControl) && InputManager.LeftClicked)
+        {
+            var map = CurrentMap;
+            var matrix = Camera2D.GetViewMatrix() * map.ScaleMatrix;
+            var p = Vector2.Transform(InputManager.GetMousePosition(), Matrix.Invert(matrix));
+            TeleportPlayer(p);
+        }
     }
 
 
@@ -709,7 +698,7 @@ public class GameScene : Scene {
 
         var oldViewport = graphicsDevice.Viewport;
         // On crée un rectangle centré autour de ce point, taille 200x200 pixels
-        Rectangle renderRect = new Rectangle(
+        Rectangle renderRect = new(
             0,
             0,
             (int)(Camera2D.CameraLogicalSize.Width * CurrentMap.ScaleMatrix.M11),

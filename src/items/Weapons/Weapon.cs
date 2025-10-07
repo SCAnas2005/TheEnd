@@ -41,6 +41,16 @@ public abstract class Weapon : Item
         // les sons seront chargés par les classes filles
     }
 
+    public override void OnPickUp(IItemUser user)
+    {
+        base.OnPickUp(user);
+        var s = (Sprite)user;
+        if (s is IWeaponUser iwu)
+        {
+            Owner = iwu;
+        }
+    }
+
 
     public override void OnDrop()
     {

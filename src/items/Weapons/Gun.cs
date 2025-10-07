@@ -62,7 +62,7 @@ public class Gun(Rectangle rect, string name, Map map, IWeaponUser owner, int dx
             if (InputManager.GetMousePosition() != InputManager.GetPreviousMousePosition())
             {
                 Vector2 mouseWorldPos = Vector2.Transform(InputManager.GetMousePosition(), Matrix.Invert(Camera2D.GetViewMatrix()));
-                Vector2 weaponCenter = new Vector2(_rect.Center.X, _rect.Center.Y);
+                Vector2 weaponCenter = new(_rect.Center.X, _rect.Center.Y);
                 _direction = mouseWorldPos - weaponCenter;
                 _rotation = (float)Math.Atan2(_direction.Y, _direction.X);
             }

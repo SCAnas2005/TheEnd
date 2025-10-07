@@ -14,6 +14,11 @@ public static class Directions
     public static Vector2 up = new Vector2(0, -1);
 }
 
+public interface IItemUser
+{
+    
+}
+
 public abstract class Sprite : Entity
 {
     protected int _maxHealth;

@@ -16,7 +16,7 @@ public enum NpcAnimation
     Down
 }
 
-public class Npc : Sprite, IDamageable, IWeaponUser
+public class Npc : Sprite, IDamageable, IItemUser, IWeaponUser
 {
 
     private Dictionary<string, ActionInteraction> _actions = new();
@@ -67,7 +67,7 @@ public class Npc : Sprite, IDamageable, IWeaponUser
             )
         );
 
-        Inventory = new Inventory(storageMax: 2);
+        Inventory = new Inventory(storageMax: 2, owner: this);
     }
 
     public Npc() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()), config: null, src:"", speed: 2f, health: 100, map:null, debug:false)

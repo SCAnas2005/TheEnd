@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Graphics;
 using TheEnd;
 
-public class Player : Sprite, IDamageable, IWeaponUser
+public class Player : Sprite, IDamageable, IItemUser, IWeaponUser
 {
     public Inventory Inventory;
     public int ZombieKilled;
@@ -46,7 +46,7 @@ public class Player : Sprite, IDamageable, IWeaponUser
 
         ZombieKilled = 0;
 
-        Inventory = inventory ?? new Inventory(5);
+        Inventory = inventory ?? new Inventory(5, owner: this);
         Money = money;
 
         zIndex = 5;

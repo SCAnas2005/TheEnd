@@ -59,6 +59,13 @@ public class BookItem : Item
         base.Update(gameTime);
     }
 
+    public override void OnDrop()
+    {
+        BookObjectView.Instance.Close();
+        BookObjectView.Instance = null;
+        base.OnDrop();
+    }
+
     public override void Draw(SpriteBatch _spriteBatch)
     {
         BookObjectView.Instance?.Draw(_spriteBatch);
