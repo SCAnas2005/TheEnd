@@ -291,6 +291,11 @@
 /processorParam:TextureFormat=Color
 /build:Items/sheetofpaper.png
 
+#begin Maps/gas_station_map.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:Maps/gas_station_map.tmx
+
 #begin Maps/grange_inside.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor

@@ -30,6 +30,7 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/photo.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/secret_key.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/sheetofpaper.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/gas_station_map.tmx</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/grange_inside.tmx</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/home_map.tmx</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/lab.tmx</File>
@@ -111,6 +112,7 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkUp/Zombie-Tileset---_0402_Capa-403.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

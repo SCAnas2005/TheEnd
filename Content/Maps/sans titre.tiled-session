@@ -8,42 +8,61 @@
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
-        "grange_inside.tmx": {
-            "scale": 1.3240625,
-            "selectedLayer": 0,
-            "viewCenter": {
-                "x": 279.8206278026906,
-                "y": 320.2265754071277
-            }
-        },
-        "home_map.tmx": {
+        "gas_station_map.tmx": {
             "expandedObjectLayers": [
-                3
+                2
             ],
-            "scale": 2,
+            "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 256.25,
-                "y": 160
+                "x": 196.5,
+                "y": -78
             }
         },
-        "lab.tmx": {
-            "scale": 1,
-            "selectedLayer": 0,
-            "viewCenter": {
-                "x": 1024.5,
-                "y": 512
-            }
-        },
-        "map.tmx": {
+        "grange_inside.tmx": {
             "expandedObjectLayers": [
                 5
             ],
             "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 295.5,
+                "y": 385
+            }
+        },
+        "home_map.tmx": {
+            "expandedObjectLayers": [
+                7,
+                3
+            ],
+            "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 482.5,
-                "y": 118
+                "x": 332.5,
+                "y": 348
+            }
+        },
+        "lab.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 695.4545454545454,
+                "y": 1030.3030303030303
+            }
+        },
+        "map.tmx": {
+            "expandedObjectLayers": [
+                14,
+                5
+            ],
+            "scale": 4,
+            "selectedLayer": 9,
+            "viewCenter": {
+                "x": 2897.375,
+                "y": 895.75
             }
         },
         "tileset_map.tsx": {

@@ -141,3 +141,4 @@ C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\sounds\sprites\zombi
 C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Items\logbook.xnb
 C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Icons\leftarrow.xnb
 C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Icons\rightarrow.xnb
+C:\Users\Anas Hadri\Desktop\TheEnd\bin\Debug\net8.0\Content\Maps\gas_station_map.xnb

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="35" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="5">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="35" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="6">
  <properties>
   <property name="defaultposX" value="18"/>
   <property name="defaultposY" value="36"/>
@@ -50,6 +50,13 @@
 597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,597,508,508,508,508,508,508,508,508,508,508
 </data>
  </layer>
+ <objectgroup id="5" name="Zones">
+  <object id="5" x="1" y="2" width="561" height="640">
+   <properties>
+    <property name="name" value="Grange"/>
+   </properties>
+  </object>
+ </objectgroup>
  <layer id="4" name="others" width="35" height="40">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

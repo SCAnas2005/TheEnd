@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/grange_inside.tmx</SourceFile>
-  <SourceTime>2025-10-08T16:24:53.2114032+02:00</SourceTime>
-  <DestFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Content/Maps/grange_inside.xnb</DestFile>
-  <DestTime>2025-10-08T16:33:00.0550455+02:00</DestTime>
+  <SourceFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/gas_station_map.tmx</SourceFile>
+  <SourceTime>2025-10-08T16:34:37.9243728+02:00</SourceTime>
+  <DestFile>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Content/Maps/gas_station_map.xnb</DestFile>
+  <DestTime>2025-10-08T16:35:59.2498804+02:00</DestTime>
   <Importer>TiledMapImporter</Importer>
   <ImporterTime>2025-01-10T18:49:08+01:00</ImporterTime>
   <Processor>TiledMapProcessor</Processor>
@@ -11,7 +11,6 @@
   <Dependencies />
   <BuildAsset>
     <string>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Content/Maps/tileset_map_0.xnb</string>
-    <string>C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Content/Maps/home_tileset_0.xnb</string>
   </BuildAsset>
   <BuildOutput />
 </PipelineBuildEvent>

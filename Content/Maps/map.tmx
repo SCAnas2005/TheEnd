@@ -1724,10 +1724,10 @@
   </object>
   <object id="21" name="gas station 1" x="2883.25" y="854.5" width="25.5" height="16.5">
    <properties>
-    <property name="destinationC" value=""/>
-    <property name="destinationL" value=""/>
-    <property name="destinationMap" value=""/>
-    <property name="state" value="false"/>
+    <property name="destinationC" value="15"/>
+    <property name="destinationL" value="9"/>
+    <property name="destinationMap" value="gas_station_map"/>
+    <property name="state" value="true"/>
     <property name="type" value="door"/>
    </properties>
   </object>

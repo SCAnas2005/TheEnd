@@ -1,3 +1,4 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/Anas Hadri/Desktop/TheEnd/Content/Icons/leftarrow.png","C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Icons/leftarrow.xnb","TextureProcessor","Texture2DContent",7401,1048661,0,154146
-"C:/Users/Anas Hadri/Desktop/TheEnd/Content/Icons/rightarrow.png","C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Icons/rightarrow.xnb","TextureProcessor","Texture2DContent",3168,1048661,0,0278471
+"C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/gas_station_map.tmx","C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Maps/gas_station_map.xnb","TiledMapProcessor","TiledMapContentItem",6050,10651,0,2238107
+"C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/tileset_map.png","C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Maps/tileset_map_1.xnb","TextureProcessor","Texture2DContent",37299,691285,0,112552
+"C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/tileset_map.tsx","C:/Users/Anas Hadri/Desktop/TheEnd/Content/bin/DesktopGL/Maps/tileset_map_0.xnb","TiledMapTilesetProcessor","TiledMapTilesetContentItem",1982,721,0,1513068

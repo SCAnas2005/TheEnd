@@ -134,6 +134,9 @@ public static class Utils
             case "grange_inside":
                 s = MapScene.Grange1;
                 break;
+            case "gas_station_map":
+                s = MapScene.GasStation1;
+                break;
             case "lab":
                 s = MapScene.Labo;
                 break;

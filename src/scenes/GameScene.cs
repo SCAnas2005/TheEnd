@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
 using TheEnd;
 
@@ -17,6 +16,7 @@ public enum MapScene
     City1,
     Home,
     Grange1,
+    GasStation1,
 }
 
 public class GameScene : Scene {
@@ -91,33 +91,31 @@ public class GameScene : Scene {
     public void CreateMapScene(MapScene scene)
     {
         switch (scene)
-        {   
+        {
             case MapScene.City1:
                 _maps[scene] = new Map(rect: Rectangle.Empty, src: "Maps/map", name: "City1", scene: scene, zoom: 4.5f, debug: false);
-                _itemsCreated[scene] = false;
-                _entitiesCreated[scene] = false;
                 break;
-            
+
             case MapScene.Home:
                 _maps[scene] = new Map(rect: Rectangle.Empty, src: "Maps/home_map", name: "Home", scene: scene, zoom: 1.3f, debug: false);
-                _itemsCreated[scene] = false;
-                _entitiesCreated[scene] = false;
                 break;
 
             case MapScene.Grange1:
                 _maps[scene] = new Map(rect: Rectangle.Empty, src: "Maps/grange_inside", name: "Grange1", scene: scene, zoom: 1.3f, debug: false);
-                _itemsCreated[scene] = false;
-                _entitiesCreated[scene] = false;
                 break;
 
+            case MapScene.GasStation1:
+                _maps[scene] = new Map(rect: Rectangle.Empty, src: "Maps/gas_station_map", name: "GasStation1", scene: scene, zoom: 1.3f, debug: false);
+                break;
             case MapScene.Labo:
                 _maps[scene] = new Map(rect: Rectangle.Empty, src: "Maps/lab", name: "Labo", scene: scene, zoom: 4.5f, debug: false);
-                _itemsCreated[scene] = false;
-                _entitiesCreated[scene] = false;
                 break;
             default:
-            break;
+                break;
         }
+        
+        _itemsCreated[scene] = false;
+        _entitiesCreated[scene] = false;
     }
 
     public void LoadMap(MapScene scene)

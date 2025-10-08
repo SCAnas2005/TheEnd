@@ -4,9 +4,61 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/gas_station_map.tmx</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/Barrel/damage.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/Barrel/normal.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/explosion_medium.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/explosion_small.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/green_fog.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/family/timmy.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-36.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-48.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-24.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-36.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-48.spritefont</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft.spritefont</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Icons/leftarrow.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Icons/rightarrow.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Inventory/cursor.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/ammo-gun.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/apple-red.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/gas-mask.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/logbook.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/medkit-green.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/paper_panel_2.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/paper_panel.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/photo.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/secret_key.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/sheetofpaper.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/grange_inside.tmx</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/home_map.tmx</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/lab.tmx</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/map.tmx</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/tileset_map.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Damage/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Damage/left.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Damage/right.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Damage/up.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Idle/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/pp.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkDown/walkdown.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkLeft/walkleft.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/right1.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/right2.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/right3.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/walkright.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkUp/walkup.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/barrel/bullet-hit-metal.wav</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/door/close.wav</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/door/open.wav</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/door/unlock.wav</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/explosion/explosion-small.wav</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/items/drop-item.wav</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/items/item-equip.wav</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/items/pickup-gun.wav</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/sprites/human/footstep_grass.wav</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/sprites/zombies/walk-sounds/zombie-1.wav</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/sprites/zombies/walk-sounds/zombie-10.wav</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/sprites/zombies/walk-sounds/zombie-11.wav</File>
@@ -31,72 +83,17 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/sprites/zombies/walk-sounds/zombie-7.wav</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/sprites/zombies/walk-sounds/zombie-8.wav</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/sprites/zombies/walk-sounds/zombie-9.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Weapons/weapons.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/items/drop-item.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/items/item-equip.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/items/pickup-gun.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/right1.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/right2.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/right3.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkRight/walkright.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/tileset_map.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/ammo-gun.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/apple-red.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/gas-mask.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/medkit-green.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/paper_panel_2.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/paper_panel.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/photo.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/secret_key.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Items/sheetofpaper.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/Barrel/damage.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/Barrel/normal.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/explosion_medium.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/explosion_small.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Entities/green_fog.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/weapons/gun.wav</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC1/Idle/idle.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC1/pp.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Down/down.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Up/up.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Down/bottom.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Idle/Idle.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Left/left.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/pp.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Right/right.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Up/top.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC1/Idle/idle.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC1/pp.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Bottom/bottom.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Top/top.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-36.spritefont</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial-48.spritefont</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Arial.spritefont</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-24.spritefont</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-36.spritefont</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft-48.spritefont</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Fonts/Minecraft.spritefont</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/barrel/bullet-hit-metal.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/door/close.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/door/open.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/door/unlock.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/entities/explosion/explosion-small.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/sprites/human/footstep_grass.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/sounds/weapons/gun.wav</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/family/timmy.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Inventory/cursor.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/grange_inside.tmx</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/home_map.tmx</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/lab.tmx</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Maps/map.tmx</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Damage/idle.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Damage/left.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Damage/right.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Damage/up.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/idle.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/Idle/idle.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/pp.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkDown/walkdown.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkLeft/walkleft.png</File>
-    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Player/WalkUp/walkup.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Sprites/NPC2/Up/up.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Weapons/Guns/gun.png</File>
+    <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Weapons/weapons.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/Idle/idle.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkDown/walkdown.png</File>
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkDown/Zombie-Tileset---_0395_Capa-396.png</File>
@@ -115,7 +112,6 @@
     <File>C:/Users/Anas Hadri/Desktop/TheEnd/Content/Zombies/WalkUp/Zombie-Tileset---_0402_Capa-403.png</File>
   </SourceFiles>
   <DestFiles>
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>
