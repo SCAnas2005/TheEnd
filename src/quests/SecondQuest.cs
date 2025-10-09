@@ -66,18 +66,20 @@ public class SecondQuest : Quest
                     typeof(Npc),
                     Map.GetPosFromMap((28, 38), player.Map.TileSize),
                     map: player.Map,
-                    config: NpcManager.GetConfigByName("Marc")
+                    config: NpcManager.GetRandomConfig()
+                    // config: NpcManager.GetConfigByName("Marc")
                 );
+                marc.Name = "Marc";
 
                 NpcManager.AddNpc(marc);
 
                 var v = marc.MoveTo(Map.GetPosFromMap((18, 31), marc.Map.TileSize));
-                Console.WriteLine("marc will move ? : " + v);
 
                 Vector2 camStart = Camera2D.Position;
                 Vector2 camTarget = marc.Position - new Vector2(Camera2D.CameraLogicalSize.Width, Camera2D.CameraLogicalSize.Height) / (2 * Camera2D.Zoom * Camera2D.Scale);
 
                 Camera2D.SetTarget(null);
+                player.CanMove = false; player.CanUseItem = false; 
 
                 CameraCinematicController.Start(
                     from: camStart,

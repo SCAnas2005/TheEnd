@@ -73,7 +73,7 @@ public class Npc : Sprite, IDamageable, IItemUser, IWeaponUser
 
     public Npc() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), GetSpriteSize().ToPoint()), config: null, src:"", speed: 2f, health: 100, map:null, debug:false)
     {
-
+        
     }
 
     public void AddAction(string name, ActionInteraction a)
@@ -141,20 +141,18 @@ public class Npc : Sprite, IDamageable, IItemUser, IWeaponUser
         _direction = Vector2.Zero;
     }
 
-    public virtual bool MoveTo(Vector2 targetPosition)
+    public virtual bool MoveTo(Vector2 targetPosition, Size maxCase = null)
     {
         _currentTargetPosition = null;
         var (Row, Col) = Map.GetMapPosFromVector2(targetPosition, Map.TileSize);
-        if (Map.IsWalkablePoint(new Point(Row, Col)) && targetPosition != Position)
+        if (Map.IsWalkablePoint(new Point(Col, Row)) && targetPosition != Position)
         {
             _currentTargetPosition = targetPosition;
-            var path = Map.FindPath(Position, targetPosition, max: null);
+            var path = Map.FindPath(Position, targetPosition, max: maxCase);
             if (path != null && path.Count > 1)
             {
                 MovePath = path;
                 MovePath.Reverse();
-                Console.Write($"PotentialTargetPoint accepted: "); Utils.PrintList(MovePath);
-
                 return true;
             }
             else
@@ -219,7 +217,7 @@ public class Npc : Sprite, IDamageable, IItemUser, IWeaponUser
                     //         MovePath = null;
                     //     }
                     // }
-                    if (!MoveTo(potentialTarget))
+                    if (!MoveTo(potentialTarget, new Size(7)))
                     // else
                     {
                         Console.WriteLine("PotentialTargetPoint rejected");

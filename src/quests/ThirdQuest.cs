@@ -16,9 +16,11 @@ public class ThirdQuest : Quest
 
     public override bool ShouldStart(Player player)
     {
-        marc ??= (Npc)EntityManager.GetFirst(e=> e is Npc n && n.Name == "Marc");
+        marc ??= NpcManager.GetFirst(n=> n.Name == "Marc");
+        Console.WriteLine("Marc : " + marc);
+        
         if (QuestManager.Get(QuestName.SecondQuest).IsCompleted && player.Map.Scene == MapScene.City1 && marc != null && marc.GetAction("speak").ConditionToAction(player))
-                return true;
+            return true;
         return false;
     }
 
