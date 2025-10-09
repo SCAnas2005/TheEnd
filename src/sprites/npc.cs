@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -70,7 +71,7 @@ public class Npc : Sprite, IDamageable, IItemUser, IWeaponUser
         Inventory = new Inventory(storageMax: 2, owner: this);
     }
 
-    public Npc() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), new Size(16).ToPoint()), config: null, src:"", speed: 2f, health: 100, map:null, debug:false)
+    public Npc() : this(rect: new Rectangle(Vector2.Zero.ToPoint(), GetSpriteSize().ToPoint()), config: null, src:"", speed: 2f, health: 100, map:null, debug:false)
     {
 
     }
@@ -140,6 +141,33 @@ public class Npc : Sprite, IDamageable, IItemUser, IWeaponUser
         _direction = Vector2.Zero;
     }
 
+    public virtual bool MoveTo(Vector2 targetPosition)
+    {
+        _currentTargetPosition = null;
+        var (Row, Col) = Map.GetMapPosFromVector2(targetPosition, Map.TileSize);
+        if (Map.IsWalkablePoint(new Point(Row, Col)) && targetPosition != Position)
+        {
+            _currentTargetPosition = targetPosition;
+            var path = Map.FindPath(Position, targetPosition, max: null);
+            if (path != null && path.Count > 1)
+            {
+                MovePath = path;
+                MovePath.Reverse();
+                Console.Write($"PotentialTargetPoint accepted: "); Utils.PrintList(MovePath);
+
+                return true;
+            }
+            else
+            {
+                MovePath = null;
+                _currentTargetPosition = null;
+                return false;
+            }
+        }
+        return false;
+    }
+
+
     public void AutomaticMove(GameTime gameTime)
     {
         float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -156,12 +184,12 @@ public class Npc : Sprite, IDamageable, IItemUser, IWeaponUser
             {
                 Vector2 direction = _currentTargetPosition.Value - Position;
                 float distance = direction.Length();
-                if (distance < 4f)
+                if (distance < 4f || MovePath == null)
                 {
                     _currentTargetPosition = null;
                     _waitTime = Utils.NextFloat(_minMoveDelay, _maxMoveDelay);
                     MovePath = null;
-                    // Console.WriteLine("Arrived at target position");
+                    Console.WriteLine("Arrived at target position");
                 }
             }
             else
@@ -172,29 +200,29 @@ public class Npc : Sprite, IDamageable, IItemUser, IWeaponUser
                     Vector2 offset = new Vector2(Utils.Random.Next(-3, 4), Utils.Random.Next(-3, 4)) * Map.TileSize.ToVector2();
                     Vector2 potentialTarget = SpawnPoint + offset;
                     // Console.WriteLine($"[Position:{Position}], [SpawnPoint:{SpawnPoint}], [offset:{offset}] Trying new potential Target Point : {potentialTarget}");
-                    var p = Map.GetMapPosFromVector2(potentialTarget, Map.TileSize);
-                    if (Map.IsWalkablePoint(new Point(p.Row, p.Col)) && potentialTarget != Position && potentialTarget != _currentTargetPosition)
-                    {
-                        _currentTargetPosition = potentialTarget;
-                        // Console.WriteLine("test");
-                        List<Vector2> path = Map.FindPath(Position, _currentTargetPosition.Value, max: new Size(7, 7));
-                        // Console.WriteLine("test2");
+                    // var p = Map.GetMapPosFromVector2(potentialTarget, Map.TileSize);
+                    // if (Map.IsWalkablePoint(new Point(p.Row, p.Col)) && potentialTarget != Position && potentialTarget != _currentTargetPosition)
+                    // {
+                    //     _currentTargetPosition = potentialTarget;
+                    //     // Console.WriteLine("test");
+                    //     List<Vector2> path = Map.FindPath(Position, _currentTargetPosition.Value, max: new Size(7));
+                    //     // Console.WriteLine("test2");
 
-                        if (path != null && path.Count > 1)
-                        {
-                            MovePath = path;
-                            MovePath.Reverse();
-                            // Console.Write($"PotentialTargetPoint accepted: "); Utils.PrintList(MovePath);
-                        }
-                        else
-                        {
-                            _currentTargetPosition = null;
-                            MovePath = null;
-                        }
-                    }
-                    else
+                    //     if (path != null && path.Count > 1)
+                    //     {
+                    //         MovePath = path;
+                    //         MovePath.Reverse();
+                    //     }
+                    //     else
+                    //     {
+                    //         _currentTargetPosition = null;
+                    //         MovePath = null;
+                    //     }
+                    // }
+                    if (!MoveTo(potentialTarget))
+                    // else
                     {
-                        // Console.WriteLine("PotentialTargetPoint rejected");
+                        Console.WriteLine("PotentialTargetPoint rejected");
                         _waitTime = 1f;
                     }
                 }

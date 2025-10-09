@@ -51,6 +51,23 @@ public static class NpcManager
             return npc;
         }
 
+        return CreateBasicNpcFromType(t, position, map, GetRandomConfig());
+    }
+
+    public static Npc CreateBasicNpcFromType(Type t, Vector2 position, Map map, NpcConfig config)
+    {
+        if (typeof(Npc).IsAssignableFrom(t))
+        {
+            // Crée dynamiquement une instance du type concret choisi
+            Npc npc = (Npc)Activator.CreateInstance(t);
+            npc.Position = position;
+            npc.SpawnPoint = position;
+            npc.Map = map;
+            npc.Config = config;
+            npc.Load(Globals.Content);
+            return npc;
+        }
+        
         return null;
     }
 

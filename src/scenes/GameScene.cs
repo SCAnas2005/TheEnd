@@ -161,7 +161,6 @@ public class GameScene : Scene {
                         ),
                         map: _maps[scene]
                     );
-                    Console.WriteLine("new barrel: " + entity.Properties["posL"]);
                 }
 
                 if (i != null) { i?.Load(Globals.Content); EntityManager.AddEntity(i); }
@@ -189,37 +188,23 @@ public class GameScene : Scene {
 
         if (scene == MapScene.City1 || scene == MapScene.Labo)
         {
-            Npc e = new(
-                rect: new Rectangle(
-                    x: ((int)CurrentMap.DefaultMapPosition.X + 5) * _maps[scene].TileSize.Width,
-                    y: ((int)CurrentMap.DefaultMapPosition.Y + 5) * _maps[scene].TileSize.Height,
-                    width: Sprite.GetSpriteSize(_maps[scene]).Width,
-                    height: Sprite.GetSpriteSize(_maps[scene]).Height
-                ),
-                config: NpcManager.GetConfigByName("Marc"),
-                src: "", speed: 2f, health: 100, map: _maps[scene], debug: true
-            );
-            e.Load(Globals.Content);
-            NpcManager.AddNpc(e);
-
             var npcs = NpcManager.CreateUselessNpcs(100);
             var pos = _maps[scene].GetAllWalkablesPosition();
 
-            ZombieManager.AddZombie(ZombieManager.CreateBasicZombie(_player.Position + new Vector2(10, 0), _maps[scene]));
-            foreach (var npc in npcs)
-            {
-                var randomPos = pos[Utils.Random.Next(0, pos.Count)];
-                npc.Rect = new Rectangle(
-                    randomPos.col * CurrentMap.TileSize.Width,
-                    randomPos.row * CurrentMap.TileSize.Height,
-                    Sprite.GetSpriteSize(CurrentMap).Width,
-                    Sprite.GetSpriteSize(CurrentMap).Height
-                );
-                npc.Map = _maps[scene];
+            // foreach (var npc in npcs)
+            // {
+            //     var randomPos = pos[Utils.Random.Next(0, pos.Count)];
+            //     npc.Rect = new Rectangle(
+            //         randomPos.col * CurrentMap.TileSize.Width,
+            //         randomPos.row * CurrentMap.TileSize.Height,
+            //         Sprite.GetSpriteSize(CurrentMap).Width,
+            //         Sprite.GetSpriteSize(CurrentMap).Height
+            //     );
+            //     npc.Map = _maps[scene];
 
-                npc.Load(Globals.Content);
-                NpcManager.AddNpc(npc);
-            }
+            //     npc.Load(Globals.Content);
+            //     NpcManager.AddNpc(npc);
+            // }
         }
     }
 
@@ -363,7 +348,6 @@ public class GameScene : Scene {
             {
                 i.Load(Globals.Content);
                 InteractionObjectsManager.Add(scene, i);
-                // InteractionObjects[scene].Add(i);
             }
         }
     }
@@ -498,13 +482,14 @@ public class GameScene : Scene {
         AudioManager.Init();
         Camera2D.Init(Globals.Graphics.GraphicsDevice.Viewport, CurrentMap);
         NotificationManager.Init();
+        EventsManager.Instance = new EventsManager();
         Console.WriteLine($"Map is loaded: {CurrentMap.Loaded}");
         _player = new Player(
             rect: new Rectangle(
                 (int)CurrentMap.DefaultMapPosition.X * CurrentMap.TileSize.Width,
                 (int)CurrentMap.DefaultMapPosition.Y * CurrentMap.TileSize.Height,
-                Sprite.GetSpriteSize(CurrentMap).Width,
-                Sprite.GetSpriteSize(CurrentMap).Height
+                Sprite.GetSpriteSize().Width,
+                Sprite.GetSpriteSize().Height
             ),
             src: "Player/idle",
             name: "Jason",
@@ -525,8 +510,8 @@ public class GameScene : Scene {
                 rect: new Rectangle(
                     randomPos.Item2 * CurrentMap.TileSize.Width,
                     randomPos.Item1 * CurrentMap.TileSize.Height,
-                    Sprite.GetSpriteSize(CurrentMap).Width,
-                    Sprite.GetSpriteSize(CurrentMap).Height
+                    Sprite.GetSpriteSize().Width,
+                    Sprite.GetSpriteSize().Height
                 ),
                 src: "",
                 speed: 2,
@@ -567,6 +552,8 @@ public class GameScene : Scene {
 
         AdminPanel.Instance = new AdminPanel();
         AdminPanel.Instance.Load(Content);
+
+        Camera2D.SetTarget(_player);
     }
 
     public void TeleportPlayer(Vector2 newPosition)
@@ -576,7 +563,6 @@ public class GameScene : Scene {
 
     public override void Update(GameTime gameTime)
     {
-        // CurrentMapScene.CalculateViewPosition(Camera2D.GetViewMatrix());
         CurrentMap.Update(gameTime);
         NotificationManager.Update(gameTime);
         TimerManager.Update(gameTime);
@@ -584,31 +570,19 @@ public class GameScene : Scene {
         QuestManager.Update(_player);
         CameraCinematicController.Update(gameTime);
         DialogManager.Instance.Update(gameTime);
+        EventsManager.Instance.Update(gameTime);
 
         var currentScene = _mapScene;
 
         EntityManager.Update(gameTime, CurrentMap);
 
-
-        // if (InteractionObjects.TryGetValue(currentScene, out var objects))
-        // {
-        //     foreach (var obj in objects.ToList()) // .ToList() évite aussi les erreurs de modification
-        //     {
-        //         obj.Update(gameTime, CurrentMapScene, _player);
-
-        //         // Si la scène a changé (par ex : par une porte), on arrête ici
-        //         if (_mapScene != currentScene)
-        //             break;
-        //     }
-        // }
-
         InteractionObjectsManager.Update(gameTime, CurrentMap);
 
         _inventoryWidget.Update(gameTime);
         _userInfo.Update(gameTime);
-        if (Camera2D.FocusOnPlayer)
+        if (Camera2D.Target != null)
         {
-            Camera2D.LookAtPlayer(_player.Position, CurrentMap);
+
         }
         else
         {
@@ -641,7 +615,7 @@ public class GameScene : Scene {
 
         if (InputManager.IsPressed(Keys.C))
         {
-            Camera2D.FocusOnPlayer = !Camera2D.FocusOnPlayer;
+            Camera2D.SetTarget(Camera2D.Target == null ? _player : null);
         }
 
 
@@ -751,8 +725,6 @@ public class GameScene : Scene {
 
         CurrentMap.DrawLayer(_spriteBatch, "forground");
 
-        // Shape.DrawRectangle(_spriteBatch, new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, Camera2D.CameraLogicalSize.Width, Camera2D.CameraLogicalSize.Height), Color.Yellow);
-
         _spriteBatch.End(); // Termine ce batch transformé
         SpriteBatchContext.Pop(); // depile le batch crée
 
@@ -769,7 +741,6 @@ public class GameScene : Scene {
 
 
 
-        // Shape.FillRectangle(_spriteBatch, renderRect, Color.Yellow);
         _inventoryWidget.Draw(_spriteBatch);
         if (QuestManager.IsPlayingQuest)
         {

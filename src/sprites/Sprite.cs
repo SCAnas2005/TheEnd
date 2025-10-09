@@ -68,6 +68,8 @@ public abstract class Sprite : Entity
 
     protected AnimatedSprite2D animation;
 
+
+
     public Sprite(Rectangle rect, string src, float speed, int health, Map map, string name = "", bool debug = false) : base(rect: rect, src: src, map: map, debug: debug)
     {
         animation = new AnimatedSprite2D();
@@ -86,9 +88,9 @@ public abstract class Sprite : Entity
         Name = name;
     }
 
-    public static Size GetSpriteSize(Map map)
+    public static Size GetSpriteSize()
     {
-        return map.TileSize - new Size(3);
+        return new Size(16) - new Size(3);
     }
 
     public void CreateBaseAnimations()
@@ -191,6 +193,7 @@ public abstract class Sprite : Entity
 
             if (_currentIndexPath >= MovePath.Count)
             {
+                Console.WriteLine("Follow path finished");
                 MovePath = null;
             }
         }

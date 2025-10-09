@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "map.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
@@ -15,8 +15,8 @@
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 196.5,
-                "y": -78
+                "x": 256.5,
+                "y": 159.5
             }
         },
         "grange_inside.tmx": {
@@ -26,8 +26,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 295.5,
-                "y": 385
+                "x": 280,
+                "y": 319.5
             }
         },
         "home_map.tmx": {
@@ -38,9 +38,15 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 332.5,
-                "y": 348
+                "x": 230,
+                "y": 159.5
             }
+        },
+        "home_tileset.tsx": {
+            "scaleInDock": 1
+        },
+        "house_fourniture.tsx": {
+            "scaleInDock": 1
         },
         "lab.tmx": {
             "expandedObjectLayers": [
@@ -49,23 +55,30 @@
             "scale": 0.33,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 695.4545454545454,
-                "y": 1030.3030303030303
+                "x": 1024.2424242424242,
+                "y": 510.60606060606057
             }
         },
         "map.tmx": {
             "expandedObjectLayers": [
-                14,
-                5
+                5,
+                14
             ],
-            "scale": 4,
-            "selectedLayer": 9,
+            "scale": 0.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 2897.375,
-                "y": 895.75
+                "x": 4145,
+                "y": 2113
             }
         },
+        "sheetofpaper.tsx": {
+            "scaleInDock": 1
+        },
+        "tileset_city.tsx": {
+            "scaleInDock": 1.5
+        },
         "tileset_map.tsx": {
+            "scaleInDock": 3,
             "scaleInEditor": 2
         }
     },
@@ -77,9 +90,19 @@
     "map.tileWidth": 16,
     "map.width": 32,
     "openFiles": [
+        "grange_inside.tmx",
+        "home_map.tmx",
+        "lab.tmx",
+        "map.tmx",
+        "gas_station_map.tmx"
     ],
     "project": "sans titre.tiled-project",
     "recentFiles": [
+        "grange_inside.tmx",
+        "home_map.tmx",
+        "lab.tmx",
+        "gas_station_map.tmx",
+        "map.tmx",
         "tileset_map.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",

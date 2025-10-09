@@ -10,7 +10,6 @@ public static class Camera2D
     public static float Rotation = 0f;
     public static bool StopX = false;
     public static bool StopY = false;
-    public static bool FocusOnPlayer = false;
     public static float? MapZoom = null;
 
     public static Size CameraLogicalSize;
@@ -24,6 +23,8 @@ public static class Camera2D
     private static Vector2 _shakeOffset = Vector2.Zero;
     private static Random _rand = new Random();
     private static bool IsShaking = false;
+
+    public static Entity Target;
 
 
     public static void Init(Viewport viewport, Map map)
@@ -40,9 +41,6 @@ public static class Camera2D
 
         Scale = Math.Max(zoomX, zoomY);
         SetZoom(map.Zoom, map);
-
-
-        FocusOnPlayer = true;
     }
 
     public static void SetZoom(float zoom, Map map)
@@ -119,14 +117,28 @@ public static class Camera2D
         Position = new Vector2(!StopX ? target.X - CameraLogicalSize.Width / effectiveZoom / 2 : Position.X, !StopY ? target.Y - CameraLogicalSize.Height / effectiveZoom / 2 : Position.Y);
     }
 
-    public static void LookAtPlayer(Vector2 target, Map map)
+    public static void LookAtPosition(Vector2 target, Map map)
     {
         LookAtPosition(target);
         ClampToMapBounds(map);
     }
 
+    public static void SetTarget(Entity e)
+    {
+        Target = e;
+    }
+
+    public static void LookAtTarget()
+    {
+        if (Target != null)
+        {
+            LookAtPosition(Target.Position, Target.Map);
+        }
+    }
+
     public static void Update(GameTime gameTime)
     {
+        LookAtTarget();
         if (IsShaking) UpdateShake(gameTime);
     }
 

@@ -32,8 +32,8 @@ public static class ZombieManager
         var zombieRect = new Rectangle(
             (int)position.X,
             (int)position.Y,
-            Sprite.GetSpriteSize(map).Width,
-            Sprite.GetSpriteSize(map).Height
+            Sprite.GetSpriteSize().Width,
+            Sprite.GetSpriteSize().Height
         );
         var zombie = new Zombie(
             rect: zombieRect,

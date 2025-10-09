@@ -33,7 +33,7 @@ public class FirstQuest : Quest
         _cinematicStarted = true;
         _cameraTrackingZombie = true;
 
-        Camera2D.FocusOnPlayer = false;
+        Camera2D.SetTarget(null);
         player.CanMove = false; player.CanUseItem = false;
 
         CameraCinematicController.Start(
@@ -45,6 +45,7 @@ public class FirstQuest : Quest
             {
                 // Après l'animation vers le zombie, on suit le zombie pendant 5s
                 z.CanMove = true; // Laisse le zombie bouger
+                Camera2D.SetTarget(z);
                 _waitHandle = TimerManager.Wait(5f, () =>
                 {
                     _cameraTrackingZombie = false; // on arrête de suivre le zombie
@@ -55,7 +56,7 @@ public class FirstQuest : Quest
                         map: player.Map,
                         onComplete: () =>
                         {
-                            Camera2D.FocusOnPlayer = true;
+                            Camera2D.SetTarget(player);
                             _cinematicStarted = false; // tout est terminé
                             player.CanMove = true; player.CanUseItem = true;
                         }
@@ -89,9 +90,9 @@ public class FirstQuest : Quest
         {
             if (_cinematicStarted && _cameraTrackingZombie)
             {
-                Camera2D.FocusOnPlayer = true;
-                Camera2D.LookAtPosition(z.Position);
-                Camera2D.FocusOnPlayer = false;
+                // Camera2D.FocusOnPlayer = true;
+                // Camera2D.LookAtPosition(z.Position);
+                // Camera2D.FocusOnPlayer = false;
             }
             if (z.IsDead)
             {

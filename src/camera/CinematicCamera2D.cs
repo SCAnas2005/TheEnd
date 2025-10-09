@@ -23,7 +23,8 @@ public static class CameraCinematicController
         _onComplete = onComplete;
         _map = map;
 
-        Camera2D.FocusOnPlayer = false;
+
+        Camera2D.SetTarget(null);
     }
 
     public static void Update(GameTime gameTime)
@@ -45,5 +46,11 @@ public static class CameraCinematicController
     private static float SmoothStep(float t)
     {
         return t * t * (3f - 2f * t); // interpolation plus douce qu’un simple Lerp linéaire
+    }
+
+    public static void Stop()
+    {
+        _isRunning = false;
+        Camera2D.SetTarget(null);
     }
 }
